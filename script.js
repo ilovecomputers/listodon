@@ -45,9 +45,38 @@ function get(url, done) {
   request.send();
 }
 
-function fetch_followings(base_url, user_id, done){
-  let url = base_url+'/api/v1/accounts/'+user_id+'/followers?limit=80&access_token='+localStorage.getItem("MASTODON_ACCESS_TOKEN");
-  console.log("vla");
+// parse a Link header by https://gist.github.com/deiu/9335803
+//
+// Link:<https://example.org/.meta>; rel=meta
+//
+// var r = parseLinkHeader(xhr.getResponseHeader('Link');
+// r['meta'] outputs https://example.org/.meta
+//
+function parseLinkHeader(header) {
+    var linkexp = /<[^>]*>\s*(\s*;\s*[^\(\)<>@,;:"\/\[\]\?={} \t]+=(([^\(\)<>@,;:"\/\[\]\?={} \t]+)|("[^"]*")))*(,|$)/g;
+    var paramexp = /[^\(\)<>@,;:"\/\[\]\?={} \t]+=(([^\(\)<>@,;:"\/\[\]\?={} \t]+)|("[^"]*"))/g;
+
+    var matches = header.match(linkexp);
+    var rels = {};
+    for (var i = 0; i < matches.length; i++) {
+        var split = matches[i].split('>');
+        var href = split[0].substring(1);
+        var ps = split[1];
+        var s = ps.match(paramexp);
+        for (var j = 0; j < s.length; j++) {
+            var p = s[j];
+            var paramsplit = p.split('=');
+            var name = paramsplit[0];
+            var rel = paramsplit[1].replace(/["']/g, '');
+            rels[rel] = href;
+        }
+    }
+    return rels;
+}
+
+function fetch_followings(url, done){
+  let api_url = url+"?limit=80&access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN");
+  
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
 
@@ -55,9 +84,14 @@ function fetch_followings(base_url, user_id, done){
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
       done(data);
-      console.log(request.getResponseHeader('Link'));
+      
+      let next = (parseLinkHeader(request.getResponseHeader('Link'))['next']);
+      if (next) {
+        
+      }
+      
     } else {
-      console.log("Error with "+ base_url + user_id +" request");
+      console.log("Error with "+ url +" request");
     }
   };
 
@@ -65,6 +99,7 @@ function fetch_followings(base_url, user_id, done){
     // There was a connection error of some sort
     
   };
+  request.send();
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -115,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     localStorage.removeItem("MASTODON_CLIENT_SECRET", "");
   });
   elem("btn_load").addEventListener("click", function(event) {
+    let url = "api/v1/accounts/7/followers"
     fetch_followings(localStorage.getItem("MASTODON_URL"), localStorage.getItem("MASTODON_USER"), console.log)
   });
 });
