@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     elem("mastodon_url").value = localStorage.getItem("MASTODON_URL");
     elem("btn_load").style = "display:block;";
     elem("sbmt").style = "display:none;";
-    elem("btn_clear").style = "display:block;";
+    elem("btn_clr").style = "display:block;";
   }
   
   
@@ -207,7 +207,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
           let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/following?limit=80";
           fetch_followings(url, (followsfollows) => {
             for (let y = 0; y < followsfollows.length; y++) {
-              elem("loadbar").value++;
               let self = localStorage.getItem("MASTODON_USER");
               if (nodeIds.includes(followsfollows[y].id)) {
                 num++;
@@ -218,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                   target:followsfollows[y].id 
                 })
                 s.refresh();
-                
+                elem("loadbar").value++;
               }
             }
           });

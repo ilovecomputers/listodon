@@ -18,8 +18,8 @@
 <body>
     <section class="section">
         <div class="container">
-            <h1 class="title is-1">Visualize your Mastodon Network</h1>
-            <h4 class="title is-4">
+            <h1 class="title">Visualize your Mastodon Network</h1>
+            <h4 class="subtitle">
                 Made by <a href="https://vis.social/@Luca">@Luca@vis.social</a><br> Thanks to <a href="https://mstdn.jp/@takahashim">@takahashim@mstdn.jp</a> for their
                 <a href="https://takahashim.github.io/mastodon-access-token/">Access Token Generator</a>
             </h4>
@@ -51,10 +51,15 @@
                     <progress id="loadbar" class="progress is-success is-large" value="0" max="0"></progress>
 
             <div id="graph-container" class="box"></div>
+      
+      
+        <div class="content">
+          <p>
+            Only accounts from your home instance are visualized.
+          </p>
         </div>
+      </div>
     </section>
-
-
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
     <script src="https://button.glitch.me/button.js"></script>
 </body>
