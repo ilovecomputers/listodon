@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       localStorage.setItem("MASTODON_ACCESS_TOKEN", data.access_token);
       get(localStorage.getItem("MASTODON_URL")+"/api/v1/accounts/verify_credentials/?access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN"), (user) => {
         localStorage.setItem("MASTODON_USER", user.id);
+        elem(loadbar).max = 
       });
     })
   }
