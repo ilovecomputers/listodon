@@ -46,7 +46,7 @@ function get(url, done) {
 }
 
 function fetch_followings(base_url, user_id, done){
-  get(base_url+'accounts/'+user_id+'?access_token='+localStorage.getItem("MASTODON_ACCESS_TOKEN"), done);
+  get(base_url+'/api/v1/accounts/'+user_id+'/followers?limit=80&access_token='+localStorage.getItem("MASTODON_ACCESS_TOKEN"), done);
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -70,15 +70,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         localStorage.setItem("MASTODON_USER", user.id);
       });
     })
-  } else {
-    localStorage.setItem("MASTODON_URL", "");
-    localStorage.setItem("MASTODON_CLIENT_ID", "");
-    localStorage.setItem("MASTODON_CLIENT_SECRET", "");
   }
+  if (localStorage.getItem("MASTODON_URL")) elem("mastodon_url").value = localStorage.getItem("MASTODON_URL");
   elem("sbmt").addEventListener("submit", function(event) {
     event.preventDefault();
     var url = elem("mastodon_url").value+"/api/v1/apps";
-    var s = elem("scopes");
     var scopes = "read";
     var args = {client_name: "Mastoviz",
                 redirect_uris: redirect_uri,
@@ -101,7 +97,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     localStorage.removeItem("MASTODON_CLIENT_SECRET", "");
   });
   elem("btn_load").addEventListener("click", function(event) {
-    let url = localStorage.getItem("MASTODON_URL")+"/api/v1/accounts/verify_credentials/?access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN")
-    fetch_followings()
+    fetch_followings(localStorage.getItem("MASTODON_URL"), localStorage.getItem("MASTODON_USER"), console.log)
   });
 });
