@@ -133,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
       localStorage.setItem("MASTODON_ACCESS_TOKEN", data.access_token);
       get(localStorage.getItem("MASTODON_URL")+"/api/v1/accounts/verify_credentials/?access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN"), (user) => {
         localStorage.setItem("MASTODON_USER", user.id);
-        localStorage.setItem("MASTODON_USER_FOLLOW_COUNT", user.following_count);
       });
     })
   }
@@ -167,12 +166,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   
   elem("btn_load").addEventListener("click", function(event) {
-    elem("loadbar").max = localStorage.getItem("MASTODON_USER_FOLLOW_COUNT");
     let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/following?limit=80";
     fetch_followings(url, (follows) => {
       
       //draw nodes
       for (let i = 0; i < follows.length; i++) {
+        if (!(follows[i].acct.includes('@'))) elem("loadbar").max += follows[i].following_count;
         g.nodes.push(follows[i]);
         nodeIds.push(follows[i].id);
         s.graph.addNode({
@@ -195,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/following?limit=80";
           fetch_followings(url, (followsfollows) => {
             for (let y = 0; y < followsfollows.length; y++) {
+              elem("loadbar").value++;
               let self = localStorage.getItem("MASTODON_USER");
               if (nodeIds.includes(followsfollows[y].id)) {
                 num++;
@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                   target:followsfollows[y].id 
                 })
                 s.refresh();
-                elem("loadbar").value++;
+                
               }
             }
           });

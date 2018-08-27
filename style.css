@@ -1,4 +1,13 @@
 #graph-container {
   height: 800px;
   width: 100%;
+  display: none;
+}
+
+#loadbar {
+  visibility:hidden;
+}
+
+#btn_fa2start, #btn_fa2stop, #btn_load {
+ display:none; 
 }
