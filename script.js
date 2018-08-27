@@ -46,7 +46,7 @@ function get(url, done) {
 }
 
 function fetch_followings(base_url, user_id, done){
-  get(base_url+'accounts/'+user_id+'?access_token='+localStorage.getItem("MASTODON_ACCESS_KEY"), done);
+  get(base_url+'accounts/'+user_id+'?access_token='+localStorage.getItem("MASTODON_ACCESS_TOKEN"), done);
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -65,8 +65,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                  grant_type: "authorization_code",
                  code: code};
     post(url2, args2, function(data) {
-      localStorage.setItem("MASTODON_ACCESS_KEY", data.access_token);
-      get(localStorage.getItem("MASTODON_URL")+"/api/v1/accounts/verify_credentials/?access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN"), ()=>{
+      localStorage.setItem("MASTODON_ACCESS_TOKEN", data.access_token);
+      get(localStorage.getItem("MASTODON_URL")+"/api/v1/accounts/verify_credentials/?access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN"), (user) => {
+        localStorage.setItem("MASTODON_USER", user.id);
       });
     })
   } else {
@@ -92,12 +93,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
   });
   elem("btn_clr").addEventListener("click", function(event) {
-    localStorage.setItem("MASTODON_URL", "");
-    localStorage.setItem("MASTODON_ACCESS_TOKEN", "");
-    localStorage.setItem("MASTODON_CLIENT_ID", "");
-    localStorage.setItem("MASTODON_CLIENT_SECRET", "");
+    elem("mastodon_url").value = "";
+    localStorage.removeItem("MASTODON_USER");
+    localStorage.removeItem("MASTODON_URL", "");
+    localStorage.removeItem("MASTODON_ACCESS_TOKEN", "");
+    localStorage.removeItem("MASTODON_CLIENT_ID", "");
+    localStorage.removeItem("MASTODON_CLIENT_SECRET", "");
   });
   elem("btn_load").addEventListener("click", function(event) {
-    console.log("click");
+    let url = localStorage.getItem("MASTODON_URL")+"/api/v1/accounts/verify_credentials/?access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN")
+    fetch_followings()
   });
 });
