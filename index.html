@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/2.0.0-alpha15/sigma.min.js" integrity="sha256-TmVak0eBKOOat3KaG0trFHdepl1tiwynTWRpj4QJNPA=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/2.0.0-alpha15/sigma-graphology.min.js" integrity="sha256-YENpDndsIwOT25XQ0K9trxdlLsXPQUofSHF11d5YQAg=" crossorigin="anonymous"></script>
-    <script src="/script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/sigma.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/plugins/sigma.exporters.svg.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>    <script src="/script.js" defer></script>
   </head>  
   <body>
     <section class="section">
@@ -29,7 +29,7 @@
             <div class="field">
               <label class="label" for="mastodon_url">Mastodon URL (https://mstdn.jp , https://pawoo.net , ...)</label>
               <p class="control has-icon has-icons-left">
-                <input class="input is-primary" type="text" id="mastodon_url" value="https://mstdn.jp" required>
+                <input class="input is-primary" type="text" id="mastodon_url" placeholder="https://mstdn.jp" required>
                 <span class="icon is-small is-left">
                   <i class="fa fa-chain"></i>
                 </span>
@@ -37,15 +37,21 @@
             </div>
 
             <div class="field">
-              <button class="button is-primary" type="submit" id="btn" name="btn">Start Visualization</button>
-              <button class="button is-danger is-outlined" type="button" id="btn_clr" name="btn_clr">clear tokens from local storage</button>
+              <button class="button is-primary" type="submit" id="btn" name="btn">Get Access Token</button>
+              <button class="button is-danger is-outlined" type="button" id="btn_clr" name="btn_clr">Clear Tokens from Local Storage</button>
             </div>
-
+            <div class="field">
+              <button class="button is-primary" type="submit" id="btn" name="btn">Load Followings</button>
+            </div>
           </form>
+            
           </div>
+          
 
-
-
+        </div>
+        
+        <div class="box">
+          <div id="container"></div>
         </div>
       </div>
     </section>
