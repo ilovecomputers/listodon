@@ -33,7 +33,6 @@ function get(url, done) {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
       done(data);
-      console.log(request.getAllResponseHeaders());
     } else {
       console.log("Error with get request");
     }
@@ -47,7 +46,25 @@ function get(url, done) {
 }
 
 function fetch_followings(base_url, user_id, done){
-  get(base_url+'/api/v1/accounts/'+user_id+'/followers?limit=80&access_token='+localStorage.getItem("MASTODON_ACCESS_TOKEN"), done);
+  let url = base_url+'/api/v1/accounts/'+user_id+'/followers?limit=80&access_token='+localStorage.getItem("MASTODON_ACCESS_TOKEN");
+  console.log("vla");
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      var data = JSON.parse(request.responseText);
+      done(data);
+      console.log(request.getResponseHeader('Link'));
+    } else {
+      console.log("Error with "+ base_url + user_id +" request");
+    }
+  };
+
+  request.onerror = function() {
+    // There was a connection error of some sort
+    
+  };
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
