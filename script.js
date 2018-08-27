@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       //draw nodes
       for (let i = 0; i < follows.length; i++) {
         g.nodes.push(follows[i]);
-        nodeIds.push(follows[i].id);
+        if (!(g.nodes[i].acct.includes('@'))) nodeIds.push(follows[i].acct);
         s.graph.addNode({
           // Main attributes:
           id: follows[i].id,
@@ -186,13 +186,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
       
       //draw edges
       for (let i = 0; i < g.nodes.length; i++) {
+        // don't try to get data of accounts from other instances
         if (!(g.nodes[i].acct.includes('@'))){
           let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/following?limit=80";
           fetch_followings(url, (followsfollows) => {
             for (let y = 0; y < followsfollows.length; y++) {
               let self = localStorage.getItem("MASTODON_USER");
-              if (followsfollows[y].id in nodeIds) {
-                console.log(followsfollows[y].acct);
+              console.log(followsfollows[y].acct);
+              if (followsfollows[y].acct in nodeIds) {
                 num++;
                 //g.edges.push(???);
                 s.graph.addEdge({
