@@ -6,6 +6,7 @@ let nodeIds = [];
 let num = 0;
 
 let s = new sigma('graph-container');
+s.settings('labelSize', 'proportional');
 
 function elem(el) {
     return document.getElementById(el);
