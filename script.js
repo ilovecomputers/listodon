@@ -66,6 +66,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
                  code: code};
     post(url2, args2, function(data) {
       localStorage.setItem("MASTODON_ACCESS_KEY", data.access_token);
+      get(localStorage.getItem("MASTODON_URL")+"/api/v1/accounts/verify_credentials/?access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN"), ()=>{
+      });
     })
   } else {
     localStorage.setItem("MASTODON_URL", "");
@@ -91,7 +93,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   elem("btn_clr").addEventListener("click", function(event) {
     localStorage.setItem("MASTODON_URL", "");
+    localStorage.setItem("MASTODON_ACCESS_TOKEN", "");
     localStorage.setItem("MASTODON_CLIENT_ID", "");
     localStorage.setItem("MASTODON_CLIENT_SECRET", "");
+  });
+  elem("btn_load").addEventListener("click", function(event) {
+    console.log("click");
   });
 });
