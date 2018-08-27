@@ -5,8 +5,14 @@ let g = {
 let nodeIds = [];
 let num = 0;
 
-let s = new sigma('graph-container');
-s.settings('labelSize', 'proportional');
+let s = new sigma({
+  container: 'graph-container',
+  settings: {
+    labelThreshold : 5,
+    labelSize : 'fixed',
+    labelSizeRatio : 2 
+  }
+});
 
 function elem(el) {
     return document.getElementById(el);
@@ -235,8 +241,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
                   target:followsfollows[y].id 
                 })
                 s.refresh();
-                elem("loadbar").value++;
               }
+              elem("loadbar").value++;
             }
           });
         }
