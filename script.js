@@ -3,6 +3,8 @@ let g = {
   edges: []
 }
 
+let s = new sigma('graph-container');
+
 function elem(el) {
     return document.getElementById(el);
 }
@@ -108,6 +110,10 @@ function fetch_followings(url, done){
   request.send();
 }
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
   var redirect_uri = "https://mastoviz.glitch.me/";
   var mastodon_url = localStorage.getItem("MASTODON_URL");
@@ -131,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   if (localStorage.getItem("MASTODON_URL")) elem("mastodon_url").value = localStorage.getItem("MASTODON_URL");
   
-  var s = new sigma('graph-container');
+  
   
   elem("sbmt").addEventListener("submit", function(event) {
     event.preventDefault();
@@ -160,8 +166,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
   elem("btn_load").addEventListener("click", function(event) {
     let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/followers?limit=80";
     fetch_followings(url, (followers) => {
-      for (let i = 0, i<followers.length, i++) {
-        
+      
+      for (let i = 0; i < followers.length; i++) {
+        console.log(followers[i]);
+        s.graph.addNode({
+          // Main attributes:
+          id: followers[i].id,
+          label: followers[i].acct,
+          // Display attributes:
+          x: getRandomInt(100),
+          y: getRandomInt(100),
+          size: followers[i].status_count,
+          color: '#f00'
+        })
+        s.refresh();
       }
     });
   });
