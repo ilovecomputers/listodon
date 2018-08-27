@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       //draw nodes
       for (let i = 0; i < follows.length; i++) {
         g.nodes.push(follows[i]);
-        if (!(g.nodes[i].acct.includes('@'))) nodeIds.push(follows[i].acct);
+        nodeIds.push(follows[i].id);
         s.graph.addNode({
           // Main attributes:
           id: follows[i].id,
@@ -192,8 +192,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           fetch_followings(url, (followsfollows) => {
             for (let y = 0; y < followsfollows.length; y++) {
               let self = localStorage.getItem("MASTODON_USER");
-              console.log(followsfollows[y].acct);
-              if (followsfollows[y].acct in nodeIds) {
+              if (nodeIds.includes(followsfollows[y].id)) {
                 num++;
                 //g.edges.push(???);
                 s.graph.addEdge({
@@ -211,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   
   elem("btn_fa2start").addEventListener("click", function(event) {
-    s.startForceAtlas2({worker: true, barnesHutOptimize: true});
+    s.startForceAtlas2({worker: true, barnesHutOptimize: false});
   });
   
   elem("btn_fa2stop").addEventListener("click", function(event) {
