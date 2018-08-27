@@ -1,3 +1,8 @@
+let g = {
+  nodes: [],
+  edges: []
+}
+
 function elem(el) {
     return document.getElementById(el);
 }
@@ -104,7 +109,6 @@ function fetch_followings(url, done){
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  /* main */
   var redirect_uri = "https://mastoviz.glitch.me/";
   var mastodon_url = localStorage.getItem("MASTODON_URL");
   var client_id = localStorage.getItem("MASTODON_CLIENT_ID");
@@ -126,6 +130,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     })
   }
   if (localStorage.getItem("MASTODON_URL")) elem("mastodon_url").value = localStorage.getItem("MASTODON_URL");
+  
+  var s = new sigma('graph-container');
+  
   elem("sbmt").addEventListener("submit", function(event) {
     event.preventDefault();
     var url = elem("mastodon_url").value+"/api/v1/apps";
@@ -152,6 +159,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   elem("btn_load").addEventListener("click", function(event) {
     let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/followers?limit=80";
-    fetch_followings(url, console.log)
+    fetch_followings(url, (followers) => {
+      for (let i = 0, i<followers.length, i++) {
+        
+      }
+    });
   });
 });
