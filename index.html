@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Mastoviz | Mastodon Network Visualization</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,64 +11,52 @@
     <link rel="stylesheet" href="/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/sigma.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/plugins/sigma.exporters.svg.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>    <script src="/script.js" defer></script>
-  </head>  
-  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>
+    <script src="/script.js" defer></script>
+</head>
+
+<body>
     <section class="section">
-      <div class="container">
-          <h1 class="title is-1">Visualize your Mastodon Network</h1>
-          <h4 class="title is-4">
-            Made by <a href="https://vis.social/@Luca">@Luca@vis.social</a><br>
-            Thanks to <a href="https://mstdn.jp/@takahashim">@takahashim@mstdn.jp</a> for their
-            <a href="https://takahashim.github.io/mastodon-access-token/">Access Token Generator</a>
-          </h4>
-  
-          
-        <div class="columns">
-          <div class="column is-5">
-          <form method="post" action="#" id="sbmt">
-            <div class="field">
-              <label class="label" for="mastodon_url">Mastodon URL (https://mstdn.jp , https://pawoo.net , ...)</label>
-              <p class="control has-icon has-icons-left">
-                <input class="input is-primary" type="text" id="mastodon_url" placeholder="https://mstdn.jp" required>
-                <span class="icon is-small is-left">
-                  <i class="fa fa-chain"></i>
-                </span>
-              </p>
+        <div class="container">
+            <h1 class="title is-1">Visualize your Mastodon Network</h1>
+            <h4 class="title is-4">
+                Made by <a href="https://vis.social/@Luca">@Luca@vis.social</a><br> Thanks to <a href="https://mstdn.jp/@takahashim">@takahashim@mstdn.jp</a> for their
+                <a href="https://takahashim.github.io/mastodon-access-token/">Access Token Generator</a>
+            </h4>
+
+
+            <div class="columns">
+                <div class="column is-5">
+                    <form method="post" action="#" id="sbmt">
+                        <div class="field">
+                            <label class="label" for="mastodon_url">Mastodon URL (https://mstdn.jp , https://pawoo.net , ...)</label>
+                            <p class="control has-icon has-icons-left">
+                                <input class="input is-primary" type="text" id="mastodon_url" placeholder="https://mstdn.jp" required>
+                                <span class="icon is-small is-left"><i class="fa fa-chain"></i></span>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <button class="button is-primary" type="submit" id="btn" name="btn">Get Access Token</button>
+                            <button class="button is-danger is-outlined" type="button" id="btn_clr" name="btn_clr">Clear Tokens from Local Storage</button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <div class="field">
-              <button class="button is-primary" type="submit" id="btn" name="btn">Get Access Token</button>
-              <button class="button is-danger is-outlined" type="button" id="btn_clr" name="btn_clr">Clear Tokens from Local Storage</button>
-            </div>
 
-          </form>
-          
+                    <button class="button is-primary" id="btn_load" name="btn_load">Load Followings</button>
+                    <button class="button is-info" id="btn_fa2start" name="btn_fa2start">Start Layout (ForceAtlas2)</button>
+                    <button class="button is-info" id="btn_fa2stop" name="btn_fa2stop">Stop Layout (ForceAtlas2)</button>
 
-            
-          </div>
-                      
-          
+                    <progress id="loadbar" class="progress is-primary is-large" value="0" max="0"></progress>
 
+            <div id="graph-container" class="box"></div>
         </div>
-         
-           <div class="colums">
-             <div class="column">
-               <button class="button is-primary" id="btn_load" name="btn_load">Load Followings</button>
-               <button class="button is-info"  id="btn_fa2start" name="btn_fa2start">Start Layout (ForceAtlas2)</button>
-               <button class="button is-info"  id="btn_fa2stop" name="btn_fa2stop">Stop Layout (ForceAtlas2)</button>
-              </div>
-             <div class="column">
-               <progress id="loadbar" class="progress is-primary is-large" value="0" max="0"></progress>
-             </div>
-        </div>
- 
-          <div id="graph-container" class="box"></div>
-      </div>
     </section>
-    
-    
+
+
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
     <script src="https://button.glitch.me/button.js"></script>
-  </body>
+</body>
+
 </html>

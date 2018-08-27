@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var client_secret = localStorage.getItem("MASTODON_CLIENT_SECRET");
   if (window.location.href.indexOf("?code=") !== -1 && mastodon_url != "" && client_id != "" && client_secret != "") {
     elem("mastodon_url").value = mastodon_url;
+    
     var code = window.location.href.replace(window.location.origin+window.location.pathname+"?code=", "");
     var url2 = mastodon_url+"/oauth/token";
     var args2 = {client_id: client_id,
@@ -136,7 +137,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
       });
     })
   }
-  if (localStorage.getItem("MASTODON_URL")) elem("mastodon_url").value = localStorage.getItem("MASTODON_URL");
+  if (localStorage.getItem("MASTODON_URL")) {
+    elem("mastodon_url").value = localStorage.getItem("MASTODON_URL");
+    elem("btn_load").style = "display:block;";
+  }
   
   
   elem("sbmt").addEventListener("submit", function(event) {
@@ -166,6 +170,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   
   elem("btn_load").addEventListener("click", function(event) {
+    elem("btn_load").style = "display:none;";
+    elem("loadbar").style = "visibility:visible;";
+    elem("btn_").style = "display:block;";
+    elem("btn_load").style = "display:block;";
     let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/following?limit=80";
     fetch_followings(url, (follows) => {
       
