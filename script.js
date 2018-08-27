@@ -258,7 +258,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   
   elem("btn_edges").addEventListener("click", function(event) {
-    hide 
+    s.settings('drawEdges', false);
+    s.refresh()
   });
   
 });
