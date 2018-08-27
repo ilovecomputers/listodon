@@ -75,10 +75,10 @@ function parseLinkHeader(header) {
 }
 
 function fetch_followings(url, done){
-  let api_url = url+"?limit=80&access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN");
+  let api_url = url+"&access_token="+localStorage.getItem("MASTODON_ACCESS_TOKEN");
   
   var request = new XMLHttpRequest();
-  request.open('GET', url, true);
+  request.open('GET', api_url, true);
 
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
@@ -87,7 +87,8 @@ function fetch_followings(url, done){
       
       let next = (parseLinkHeader(request.getResponseHeader('Link'))['next']);
       if (next) {
-        
+        console.log(next);
+        fetch_followings(next, done);
       }
       
     } else {
@@ -150,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     localStorage.removeItem("MASTODON_CLIENT_SECRET", "");
   });
   elem("btn_load").addEventListener("click", function(event) {
-    let url = "api/v1/accounts/7/followers"
-    fetch_followings(localStorage.getItem("MASTODON_URL"), localStorage.getItem("MASTODON_USER"), console.log)
+    let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/followers?limit=80";
+    fetch_followings(url, console.log)
   });
 });
