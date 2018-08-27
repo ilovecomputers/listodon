@@ -5,29 +5,123 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js" defer></script>
   </head>  
   <body>
-    <h1>Visualize your Mastodon Network</h1>
-    <h4>
-      Made by <a href="https://vis.social/@Luca">@Luca@vis.social</a>.
-    </h4>
-    
-    <p>
-      This tool has no backend, everything is done in your browser.
-    </p>
-    
-    <form>
-      <!-- https://github.com/takahashim/mastodon-access-token -->
+    <header>
+      <h1 class="title is-1">>Visualize your Mastodon Network</h1>
+      <h4>
+        Made by <a href="https://vis.social/@Luca">@Luca@vis.social</a><br>
+        Code to get Access Token by <a href="https://mstdn.jp/@takahashim">@takahashim@mstdn.jp</a> 
+        (<a href="https://takahashim.github.io/mastodon-access-token/">Access Token Generator</a>)
+      </h4>
+
       <p>
-        Use one of the following services to generate a
+        This tool has no backend, everything is done in your browser.
       </p>
-      <input type="password" name="accesstoken" >
-      <button>
-        Start
-      </button>
-    </form>
+    </header>
+    
+<section class="section">
+      <div class="container">
+
+        <div class="columns">
+          <div class="column is-5">
+          <h2 class="title is-2">Form</h2>
+          <form method="post" action="#" id="sbmt">
+            <div class="field">
+              <label class="label" for="mastodon_url">Mastodon URL (https://mstdn.jp , https://pawoo.net , ...)</label>
+              <p class="control has-icon has-icons-left">
+                <input class="input is-primary" type="text" id="mastodon_url" value="https://mstdn.jp" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-chain"></i>
+                </span>
+              </p>
+            </div>
+            <div class="field">
+              <label class="label">Client Name</label>
+              <p class="control has-icon has-icons-left">
+                <input class="input is-primary" type="text" id="client_name" value="sample-client" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-paper-plane"></i>
+                </span>
+              </p>
+            </div>
+            <div class="field">
+              <label class="label">Web site</label>
+              <p class="control has-icon has-icons-left">
+                <input class="input is-primary" type="text" id="website" placeholder="https://example.jp">
+                <span class="icon is-small is-left">
+                  <i class="fa fa-chain"></i>
+                </span>
+              </p>
+            </div>
+            <div class="field">
+              <label class="label">Scopes</label>
+              <p class="control">
+                <span class="select">
+                  <select name="scopes" id="scopes">
+                    <option>read</option>
+                    <option>write</option>
+                    <option>follow</option>
+                    <option>read write</option>
+                    <option>read follow</option>
+                    <option>write follow</option>
+                    <option>read write follow</option>
+                  </select>
+                </span>
+              </p>
+            </div>
+
+            <div class="field">
+              <p class="control">
+                <button class="button is-primary" type="submit" id="btn" name="btn">Publish access_token<button>
+
+                <button class="button is-primary is-outlined" type="button" id="btn_clr" name="btn_clr">clear tokens</button>
+              </p>
+            </div>
+
+          </form>
+          </div>
+
+
+          <div class="column">
+            <h2 class="title is-2">Result</h2>
+
+            <article class="message is-info">
+              <div class="message-header">
+                <p>access_token</p>
+              </div>
+              <div class="message-body">
+                <p><span id="access_token"></span></p>
+              </div>
+            </article>
+
+            <article class="message is-warning">
+              <div class="message-header">
+                <p>client_id &nbsp;<button id="btn_client_id" type="button" class="button is-small is-inverted">show</button></p>
+              </div>
+              <div class="message-body">
+                <p><span id="client_id" style="visibility:hidden;"></span></p>
+              </div>
+            </article>
+
+            <article class="message is-warning">
+              <div class="message-header">
+                <p>client_secret &nbsp;<button id="btn_client_secret" type="button" class="button is-small is-inverted">show</button></p>
+              </div>
+              <div class="message-body">
+                <p><span id="client_secret" style="visibility:hidden;"></span></p>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    
     
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
     <script src="https://button.glitch.me/button.js"></script>
