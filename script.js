@@ -155,9 +155,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   if (localStorage.getItem("MASTODON_URL")) {
     elem("mastodon_url").value = localStorage.getItem("MASTODON_URL");
-    elem("btn_load").style = "display:block;";
+    elem("btn_load").style = "display:inline-flex;";
     elem("sbmt").style = "display:none;";
-    elem("btn_clr").style = "display:block;";
+    elem("btn_clr").style = "display:inline-flex;";
   }
   
   
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   elem("btn_clr").addEventListener("click", function(event) {
     elem("mastodon_url").value = "";
-    elem("sbmt").style = "display:block;";
+    elem("sbmt").style = "display:inline-flex;";
     elem("btn_clear").style = "display:none;";
     localStorage.removeItem("MASTODON_USER");
     localStorage.removeItem("MASTODON_URL", "");
@@ -190,12 +190,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   
   elem("btn_load").addEventListener("click", function(event) {
-    elem("graph-container").style = "display:block;";
+    elem("graph-container").style = "display:inline-flex;";
     elem("btn_load").style = "display:none;";
     elem("loadbar").style = "visibility:visible;";
-    elem("btn_fa2start").style = "display:block;";
-    elem("btns_graph").style = "display:block;";
-    elem("btns_graph").style = "display:block;";
+    elem("btn_fa2start").style = "display:inline-flex;";
+    elem("btns_graph").style = "display:inline-flex;";
+    elem("btns_graph").style = "display:inline-flex;";
     let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/following?limit=80";
     fetch_followings(url, (follows) => {
       
@@ -247,12 +247,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   elem("btn_fa2start").addEventListener("click", function(event) {
     elem("btn_fa2start").style = "display:none;";
-    elem("btn_fa2stop").style = "display:block;";
+    elem("btn_fa2stop").style = "display:inline-flex;";
     s.startForceAtlas2({worker: true, barnesHutOptimize: false});
   });
   
   elem("btn_fa2stop").addEventListener("click", function(event) {
-    elem("btn_fa2start").style = "display:block;";
+    elem("btn_fa2start").style = "display:inline-flex;";
     elem("btn_fa2stop").style = "display:none;";
     s.stopForceAtlas2();
   });
