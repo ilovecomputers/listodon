@@ -170,14 +170,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   elem("sbmt").addEventListener("submit", function(event) {
     event.preventDefault();
-    var url = elem("mastodon_url").value+"/api/v1/apps";
+    var url = elem("mastodon_url").value.replace(/\/$/, '')+"/api/v1/apps";
     var scopes = "read:accounts read:follows";
     var args = {client_name: "Mastoviz",
                 redirect_uris: redirect_uri,
                 website: "https://mastoviz.glitch.me/",
                 scopes: scopes};
     post(url ,args, function(data) {
-      localStorage.setItem("MASTODON_URL", elem("mastodon_url").value);
+      localStorage.setItem("MASTODON_URL", elem("mastodon_url").value.replace(/\/$/, ''));
       localStorage.setItem("MASTODON_CLIENT_ID", data.client_id);
       localStorage.setItem("MASTODON_CLIENT_SECRET", data.client_secret);
       var redirectLink = elem("mastodon_url").value+"/oauth/authorize?client_id="+data.client_id+"&redirect_uri="+redirect_uri+"&response_type=code&scope=" + scopes;
