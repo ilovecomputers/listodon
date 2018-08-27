@@ -1,7 +1,8 @@
 let g = {
   nodes: [],
   edges: []
-}
+};
+let num = 0;
 
 let s = new sigma('graph-container');
 
@@ -189,10 +190,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
           let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/following?limit=80";
           fetch_followings(url, (followsfollows) => {
             for (let y = 0; y < followsfollows.length; y++) {
+              num++;
               //g.edges.push(???);
               s.graph.addEdge({
-                id: 'e'+i+'_'+y,
-                source:follows[i].id,
+                id: 'e'+num,
+                source:g.nodes[i].id,
                 target:followsfollows[y].id 
               })
               s.refresh();
