@@ -45,6 +45,10 @@ function get(url, done) {
   request.send();
 }
 
+function fetch_followings(base_url, user_id, done){
+  get(base_url+'accounts/'+user_id+'?access_token='+localStorage.getItem("MASTODON_ACCESS_KEY"), done);
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
   /* main */
   var redirect_uri = "https://mastoviz.glitch.me/";
