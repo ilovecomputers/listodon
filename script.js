@@ -140,6 +140,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   if (localStorage.getItem("MASTODON_URL")) {
     elem("mastodon_url").value = localStorage.getItem("MASTODON_URL");
     elem("btn_load").style = "display:block;";
+    elem("sbmt").style = "display:none;";
+    elem("btn_clear").style = "display:block;";
   }
   
   
@@ -162,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   elem("btn_clr").addEventListener("click", function(event) {
     elem("mastodon_url").value = "";
+    elem("sbmt").style = "display:block;";
     localStorage.removeItem("MASTODON_USER");
     localStorage.removeItem("MASTODON_URL", "");
     localStorage.removeItem("MASTODON_ACCESS_TOKEN", "");
@@ -170,29 +173,31 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   
   elem("btn_load").addEventListener("click", function(event) {
+    elem("graph-container").style = "display:block;";
     elem("btn_load").style = "display:none;";
     elem("loadbar").style = "visibility:visible;";
-    elem("btn_").style = "display:block;";
-    elem("btn_load").style = "display:block;";
+    elem("btn_fa2start").style = "display:block;";
     let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/following?limit=80";
     fetch_followings(url, (follows) => {
       
       //draw nodes
       for (let i = 0; i < follows.length; i++) {
-        if (!(follows[i].acct.includes('@'))) elem("loadbar").max += follows[i].following_count;
-        g.nodes.push(follows[i]);
-        nodeIds.push(follows[i].id);
-        s.graph.addNode({
-          // Main attributes:
-          id: follows[i].id,
-          label: follows[i].acct,
-          // Display attributes:
-          x: getRandomInt(200),
-          y: getRandomInt(200),
-          size: follows[i].statuses_count,
-          color: '#f00'
-        })
-        s.refresh();
+        if (!(follows[i].acct.includes('@'))) {
+          elem("loadbar").max += follows[i].following_count;
+          g.nodes.push(follows[i]);
+          nodeIds.push(follows[i].id);
+          s.graph.addNode({
+            // Main attributes:
+            id: follows[i].id,
+            label: follows[i].acct,
+            // Display attributes:
+            x: getRandomInt(200),
+            y: getRandomInt(200),
+            size: follows[i].statuses_count,
+            color: '#f00'
+          })
+          s.refresh();
+        }
       }
       
       //draw edges
@@ -223,10 +228,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   
   elem("btn_fa2start").addEventListener("click", function(event) {
+    elem("btn_fa2start").style = "display:none;";
+    elem("btn_fa2stop").style = "display:block;";
     s.startForceAtlas2({worker: true, barnesHutOptimize: false});
   });
   
   elem("btn_fa2stop").addEventListener("click", function(event) {
+    elem("btn_fa2start").style = "display:block;";
+    elem("btn_fa2stop").style = "display:none;";
     s.stopForceAtlas2();
   });
   
