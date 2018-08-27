@@ -8,28 +8,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/2.0.0-alpha15/sigma.min.js" integrity="sha256-TmVak0eBKOOat3KaG0trFHdepl1tiwynTWRpj4QJNPA=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/2.0.0-alpha15/sigma-graphology.min.js" integrity="sha256-YENpDndsIwOT25XQ0K9trxdlLsXPQUofSHF11d5YQAg=" crossorigin="anonymous"></script>
     <script src="/script.js" defer></script>
   </head>  
-  <body><section class="section">
+  <body>
+    <section class="section">
       <div class="container">
-    <header>
-      <h1 class="title is-1">Visualize your Mastodon Network</h1>
-      <h4 class="title is-4">
-        Made by <a href="https://vis.social/@Luca">@Luca@vis.social</a><br>
-        Code to get Access Token by <a href="https://mstdn.jp/@takahashim">@takahashim@mstdn.jp</a> 
-        (<a href="https://takahashim.github.io/mastodon-access-token/">Access Token Generator</a>)
-      </h4>
-
-      <p>
-        This tool has no backend, everything is done in your browser.
-      </p>
-    </header>
-    
-
-
+          <h1 class="title is-1">Visualize your Mastodon Network</h1>
+          <h4 class="title is-4">
+            Made by <a href="https://vis.social/@Luca">@Luca@vis.social</a><br>
+            Code to get Access Token by <a href="https://mstdn.jp/@takahashim">@takahashim@mstdn.jp</a> 
+            (<a href="https://takahashim.github.io/mastodon-access-token/">Access Token Generator</a>)
+          </h4>
+  
+          
         <div class="columns">
           <div class="column is-5">
-          <h2 class="title is-2">Form</h2>
           <form method="post" action="#" id="sbmt">
             <div class="field">
               <label class="label" for="mastodon_url">Mastodon URL (https://mstdn.jp , https://pawoo.net , ...)</label>
@@ -50,21 +45,7 @@
           </div>
 
 
-          <div class="column">
-            <h2 class="title is-2">Result</h2>
 
-            <article class="message is-info">
-              <div class="message-header">
-                <p>access_token</p>
-              </div>
-              <div class="message-body">
-                <p><span id="access_token"></span></p>
-              </div>
-            </article>
-
-
-
-          </div>
         </div>
       </div>
     </section>
