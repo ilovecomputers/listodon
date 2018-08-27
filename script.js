@@ -194,6 +194,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     elem("btn_load").style = "display:none;";
     elem("loadbar").style = "visibility:visible;";
     elem("btn_fa2start").style = "display:block;";
+    elem("btns_graph").style = "display:block;";
+    elem("btns_graph").style = "display:block;";
     let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/following?limit=80";
     fetch_followings(url, (follows) => {
       
@@ -253,6 +255,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     elem("btn_fa2start").style = "display:block;";
     elem("btn_fa2stop").style = "display:none;";
     s.stopForceAtlas2();
+  });
+  
+  elem("btn_edges").addEventListener("click", function(event) {
+    hide 
   });
   
 });

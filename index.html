@@ -26,10 +26,10 @@
 
 
             <div class="columns">
-                <div class="column is-5">
+                <div class="column is-half">
                     <form method="post" action="#" id="sbmt">
                         <div class="field">
-                            <label class="label" for="mastodon_url">Mastodon URL (https://mstdn.jp , https://pawoo.net , ...)</label>
+                            <label class="label" for="mastodon_url">Mastodon URL (https://mastodon.social, https://pawoo.net, …)</label>
                             <p class="control has-icon has-icons-left">
                                 <input class="input is-primary" type="text" id="mastodon_url" placeholder="https://mstdn.jp" required>
                                 <span class="icon is-small is-left"><i class="fa fa-chain"></i></span>
@@ -45,8 +45,12 @@
 
 
                     <button class="button is-success" id="btn_load" name="btn_load">Load Followings</button>
-                    <button class="button is-info" id="btn_fa2start" name="btn_fa2start">Start Layout (ForceAtlas2)</button>
-                    <button class="button is-info" id="btn_fa2stop" name="btn_fa2stop">Stop Layout (ForceAtlas2)</button>
+          <div id="btns_graph" class="container" style="display:none">
+            <button class="button is-info" id="btn_fa2start" name="btn_fa2start">Layout (ForceAtlas2)</button>
+            <button class="button is-info" id="btn_fa2stop" name="btn_fa2stop">Layout (ForceAtlas2)</button>
+            <button class="button is-info" id="btn_edges" name="btn_edges">Edges</button>
+          </div>
+                    
 
                     <progress id="loadbar" class="progress is-success is-large" value="0" max="0"></progress>
 
