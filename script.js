@@ -164,22 +164,51 @@ document.addEventListener("DOMContentLoaded", function(event) {
     localStorage.removeItem("MASTODON_CLIENT_SECRET", "");
   });
   elem("btn_load").addEventListener("click", function(event) {
-    let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/followers?limit=80";
-    fetch_followings(url, (followers) => {
+    let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/follows?limit=80";
+    fetch_followings(url, (follows) => {
       
-      for (let i = 0; i < followers.length; i++) {
-        console.log(followers[i]);
+      //draw nodes
+      for (let i = 0; i < follows.length; i++) {
+        g.nodes.push(follows[i]);
         s.graph.addNode({
           // Main attributes:
-          id: followers[i].id,
-          label: followers[i].acct,
+          id: follows[i].id,
+          label: follows[i].acct,
           // Display attributes:
-          x: getRandomInt(100),
-          y: getRandomInt(100),
-          size: followers[i].status_count,
+          x: getRandomInt(200),
+          y: getRandomInt(200),
+          size: follows[i].statuses_count,
           color: '#f00'
         })
         s.refresh();
+      }
+      
+      //draw edges
+      for (let i = 0; i < g.nodes.length; i++) {
+        let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/follows?limit=80";
+            fetch_followings(url, (followsfollows) => {
+      
+          for (let i = 0; i < followers.length; i++) {
+            g.edges.push(followsfollows[i]);
+            s.graph.addNode({
+              // Main attributes:
+              id: followsfollows[i].id,
+              label: followsfollows[i].acct,
+              // Display attributes:
+              x: getRandomInt(200),
+              y: getRandomInt(200),
+              size: followsfollows[i].statuses_count,
+              color: '#f00'
+            })
+            s.refresh();
+          }
+
+          //draw edges
+          for (let i = 0; i < g.nodes.length; i++) {
+            let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/followers?limit=80";
+
+          }
+        });
       }
     });
   });
