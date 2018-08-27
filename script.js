@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       
       //draw edges
       for (let i = 0; i < g.nodes.length; i++) {
-        if (g.nodes[i].acct.includes('@')){
+        if (!(g.nodes[i].acct.includes('@'))){
           let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/following?limit=80";
           fetch_followings(url, (followsfollows) => {
             for (let y = 0; y < followsfollows.length; y++) {
@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
               s.refresh();
             }
           });
-      }
+        }
       }
     });
     
