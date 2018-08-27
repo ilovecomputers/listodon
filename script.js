@@ -115,6 +115,22 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+// https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
+function hashCode(str) { // java String#hashCode
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+       hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+} 
+function intToRGB(i){
+    var c = (i & 0x00FFFFFF)
+        .toString(16)
+        .toUpperCase();
+
+    return "00000".substring(0, 6 - c.length) + c;
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
   var redirect_uri = "https://mastoviz.glitch.me/";
   var mastodon_url = localStorage.getItem("MASTODON_URL");
@@ -165,6 +181,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   elem("btn_clr").addEventListener("click", function(event) {
     elem("mastodon_url").value = "";
     elem("sbmt").style = "display:block;";
+    elem("btn_clear").style = "display:none;";
     localStorage.removeItem("MASTODON_USER");
     localStorage.removeItem("MASTODON_URL", "");
     localStorage.removeItem("MASTODON_ACCESS_TOKEN", "");
@@ -194,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             x: getRandomInt(200),
             y: getRandomInt(200),
             size: follows[i].statuses_count,
-            color: '#f00'
+            color: '#'+intToRGB(hashCode(follows[i].acct))
           })
           s.refresh();
         }
