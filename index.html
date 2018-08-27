@@ -10,10 +10,11 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js" defer></script>
   </head>  
-  <body>
+  <body><section class="section">
+      <div class="container">
     <header>
-      <h1 class="title is-1">>Visualize your Mastodon Network</h1>
-      <h4>
+      <h1 class="title is-1">Visualize your Mastodon Network</h1>
+      <h4 class="title is-4">
         Made by <a href="https://vis.social/@Luca">@Luca@vis.social</a><br>
         Code to get Access Token by <a href="https://mstdn.jp/@takahashim">@takahashim@mstdn.jp</a> 
         (<a href="https://takahashim.github.io/mastodon-access-token/">Access Token Generator</a>)
@@ -24,8 +25,7 @@
       </p>
     </header>
     
-<section class="section">
-      <div class="container">
+
 
         <div class="columns">
           <div class="column is-5">
@@ -40,47 +40,10 @@
                 </span>
               </p>
             </div>
-            <div class="field">
-              <label class="label">Client Name</label>
-              <p class="control has-icon has-icons-left">
-                <input class="input is-primary" type="text" id="client_name" value="sample-client" required>
-                <span class="icon is-small is-left">
-                  <i class="fa fa-paper-plane"></i>
-                </span>
-              </p>
-            </div>
-            <div class="field">
-              <label class="label">Web site</label>
-              <p class="control has-icon has-icons-left">
-                <input class="input is-primary" type="text" id="website" placeholder="https://example.jp">
-                <span class="icon is-small is-left">
-                  <i class="fa fa-chain"></i>
-                </span>
-              </p>
-            </div>
-            <div class="field">
-              <label class="label">Scopes</label>
-              <p class="control">
-                <span class="select">
-                  <select name="scopes" id="scopes">
-                    <option>read</option>
-                    <option>write</option>
-                    <option>follow</option>
-                    <option>read write</option>
-                    <option>read follow</option>
-                    <option>write follow</option>
-                    <option>read write follow</option>
-                  </select>
-                </span>
-              </p>
-            </div>
 
             <div class="field">
-              <p class="control">
-                <button class="button is-primary" type="submit" id="btn" name="btn">Publish access_token<button>
-
-                <button class="button is-primary is-outlined" type="button" id="btn_clr" name="btn_clr">clear tokens</button>
-              </p>
+              <button class="button is-primary" type="submit" id="btn" name="btn">Start Visualization</button>
+              <button class="button is-primary is-outlined" type="button" id="btn_clr" name="btn_clr">clear tokens from local storage</button>
             </div>
 
           </form>
@@ -99,23 +62,7 @@
               </div>
             </article>
 
-            <article class="message is-warning">
-              <div class="message-header">
-                <p>client_id &nbsp;<button id="btn_client_id" type="button" class="button is-small is-inverted">show</button></p>
-              </div>
-              <div class="message-body">
-                <p><span id="client_id" style="visibility:hidden;"></span></p>
-              </div>
-            </article>
 
-            <article class="message is-warning">
-              <div class="message-header">
-                <p>client_secret &nbsp;<button id="btn_client_secret" type="button" class="button is-small is-inverted">show</button></p>
-              </div>
-              <div class="message-body">
-                <p><span id="client_secret" style="visibility:hidden;"></span></p>
-              </div>
-            </article>
 
           </div>
         </div>
