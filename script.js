@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     localStorage.removeItem("MASTODON_CLIENT_SECRET", "");
   });
   elem("btn_load").addEventListener("click", function(event) {
-    let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/follows?limit=80";
+    let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ localStorage.getItem("MASTODON_USER") +"/following?limit=80";
     fetch_followings(url, (follows) => {
       
       //draw nodes
@@ -185,28 +185,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
       
       //draw edges
       for (let i = 0; i < g.nodes.length; i++) {
-        let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/follows?limit=80";
+        let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/following?limit=80";
             fetch_followings(url, (followsfollows) => {
       
-          for (let i = 0; i < followers.length; i++) {
-            g.edges.push(followsfollows[i]);
-            s.graph.addNode({
-              // Main attributes:
-              id: followsfollows[i].id,
-              label: followsfollows[i].acct,
-              // Display attributes:
-              x: getRandomInt(200),
-              y: getRandomInt(200),
-              size: followsfollows[i].statuses_count,
-              color: '#f00'
+          for (let y = 0; y < followsfollows.length; y++) {
+            //g.edges.push(???);
+            s.graph.addEdge({
+              id: 'e'+i+'_'+y,
+              source:follows[i].id,
+              target:followsfollows[y].id 
             })
             s.refresh();
-          }
-
-          //draw edges
-          for (let i = 0; i < g.nodes.length; i++) {
-            let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/followers?limit=80";
-
           }
         });
       }
