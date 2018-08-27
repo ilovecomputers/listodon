@@ -190,14 +190,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
           let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/following?limit=80";
           fetch_followings(url, (followsfollows) => {
             for (let y = 0; y < followsfollows.length; y++) {
-              num++;
-              //g.edges.push(???);
-              s.graph.addEdge({
-                id: 'e'+num,
-                source:g.nodes[i].id,
-                target:followsfollows[y].id 
-              })
-              s.refresh();
+              let self = localStorage.getItem("MASTODON_USER");
+              if (followsfollows[y].id != self) {
+                num++;
+                //g.edges.push(???);
+                s.graph.addEdge({
+                  id: 'e'+num,
+                  source:g.nodes[i].id,
+                  target:followsfollows[y].id 
+                })
+                s.refresh();
+              }
             }
           });
         }
@@ -205,8 +208,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
     
     setTimeout(() => {
-      s.startForceAtlas2({worker: true, barnesHutOptimize: false});
-    }, 10);
+      s.startForceAtlas2({worker: true, barnesHutOptimize: true});
+    }, 60*60);
     
   });
 });
