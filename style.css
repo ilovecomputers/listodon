@@ -9,6 +9,10 @@
   margin-top: 20px;
 }
 
-#btn_fa2start, #btn_fa2stop, #btn_load, #btn_clr {
+#btn_load, #btn_clr {
  display:none; 
+}
+
+.button {
+ margin-right: .5rem; 
 }
