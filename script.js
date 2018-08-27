@@ -2,6 +2,7 @@ let g = {
   nodes: [],
   edges: []
 };
+let nodeIds = [];
 let num = 0;
 
 let s = new sigma('graph-container');
@@ -95,7 +96,6 @@ function fetch_followings(url, done){
       
       let next = (parseLinkHeader(request.getResponseHeader('Link'))['next']);
       if (next) {
-        console.log(next);
         fetch_followings(next, done);
       }
       
@@ -139,7 +139,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   if (localStorage.getItem("MASTODON_URL")) elem("mastodon_url").value = localStorage.getItem("MASTODON_URL");
   
   
-  
   elem("sbmt").addEventListener("submit", function(event) {
     event.preventDefault();
     var url = elem("mastodon_url").value+"/api/v1/apps";
@@ -171,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       //draw nodes
       for (let i = 0; i < follows.length; i++) {
         g.nodes.push(follows[i]);
+        nodeIds.push(follows[i].id);
         s.graph.addNode({
           // Main attributes:
           id: follows[i].id,
@@ -191,7 +191,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
           fetch_followings(url, (followsfollows) => {
             for (let y = 0; y < followsfollows.length; y++) {
               let self = localStorage.getItem("MASTODON_USER");
-              if (followsfollows[y].id != self) {
+              if (followsfollows[y].id in nodeIds) {
+                console.log(followsfollows[y].acct);
                 num++;
                 //g.edges.push(???);
                 s.graph.addEdge({
@@ -206,10 +207,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
       }
     });
-    
-    setTimeout(() => {
-      s.startForceAtlas2({worker: true, barnesHutOptimize: true});
-    }, 60*60);
-    
   });
+  
+  elem("btn_fa2start").addEventListener("click", function(event) {
+    s.startForceAtlas2({worker: true, barnesHutOptimize: true});
+  });
+  
+  elem("btn_fa2stop").addEventListener("click", function(event) {
+    s.stopForceAtlas2();
+  });
+  
 });
