@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   elem("sbmt").addEventListener("submit", function(event) {
     event.preventDefault();
     var url = elem("mastodon_url").value+"/api/v1/apps";
-    var scopes = "read";
+    var scopes = "read:accounts read:follows";
     var args = {client_name: "Mastoviz",
                 redirect_uris: redirect_uri,
                 website: "https://mastoviz.glitch.me/",
