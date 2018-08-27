@@ -33,6 +33,7 @@ function get(url, done) {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
       done(data);
+      console.log(request.getAllResponseHeaders());
     } else {
       console.log("Error with get request");
     }
