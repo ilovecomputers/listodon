@@ -10,7 +10,10 @@ let s = new sigma({
   settings: {
     labelThreshold : 5,
     labelSize : 'fixed',
-    labelSizeRatio : 2 
+    labelSizeRatio : 2,
+    hideEdgesOnMove : true,
+    minEdgeSize : 0.1,
+    maxEdgeSize : 0.5,
   }
 });
 
@@ -240,18 +243,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
                   source:g.nodes[i].id,
                   target:followsfollows[y].id 
                 })
-                s.refresh();
               }
               elem("loadbar").value++;
             }
           });
+          s.refresh();
         }
       }
     });
   });
   
   elem("btn_fa2start").addEventListener("click", function(event) {
-    s.startForceAtlas2({worker: true, barnesHutOptimize: false});
+    s.startForceAtlas2({worker: true, 
+                        barnesHutOptimize: false, 
+                        linLogMode : true});
   });
   
   elem("btn_fa2stop").addEventListener("click", function(event) {
