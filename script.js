@@ -82,8 +82,7 @@ let s = new sigma({
     labelSizeRatio : 2,
     hideEdgesOnMove : true,
     minEdgeSize : 0.1,
-    maxEdgeSize : 0.5,
-    minArrowSize : 5
+    maxEdgeSize : 0.5
   }
 });
 
@@ -307,6 +306,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/"+ g.nodes[i].id +"/following?limit=80";
           fetch_followings(url, (followsfollows) => {
             for (let y = 0; y < followsfollows.length; y++) {
+              elem("loadbar").value++;
               if (nodeIds.includes(followsfollows[y].id)) {
                 num++;
                 //g.edges.push(???);
@@ -316,10 +316,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
                   target:followsfollows[y].id 
                 })
               }
-              elem("loadbar").value++;
             }
           });
           s.refresh();
+          enhance_graph(s)
         }
       }
     });
