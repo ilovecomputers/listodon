@@ -5,7 +5,19 @@ let g = {
 let nodeIds = [];
 let num = 0;
 
+sigma.classes.graph.addMethod('neighbors', function(nodeId) {
+    var k,
+        neighbors = {},
+        index = this.allNeighborsIndex[nodeId] || {};
+
+    for (k in index)
+      neighbors[k] = this.nodesIndex[k];
+
+    return neighbors;
+  });
+
 let s = new sigma({
+  //https://github.com/jacomyal/sigma.js/wiki/Settings
   container: 'graph-container',
   settings: {
     labelThreshold : 5,
@@ -14,8 +26,11 @@ let s = new sigma({
     hideEdgesOnMove : true,
     minEdgeSize : 0.1,
     maxEdgeSize : 0.5,
+    minArrowSize : 5
   }
 });
+
+
 
 function elem(el) {
     return document.getElementById(el);
@@ -254,6 +269,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   
   elem("btn_fa2start").addEventListener("click", function(event) {
+    // https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.layout.forceAtlas2
     s.startForceAtlas2({worker: true, 
                         barnesHutOptimize: false, 
                         linLogMode : true});
