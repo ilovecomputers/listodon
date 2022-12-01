@@ -1,5 +1,3 @@
-Mastodon Network Visualization
-=================
+# Listodon
 
-Visualize the accounts you follow on Mastodon.
-
+Manage your Mastodon lists!
