@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		event.preventDefault();
 		let inputElement = document.querySelector("input");
 		var url = inputElement.value.replace(/\/$/, '') + "/api/v1/apps";
-		var scopes = "read:follows read:lists write:lists";
+		var scopes = "read:accounts read:lists write:lists";
 		var args = {
 			client_name: "Listodon",
 			redirect_uris: redirect_uri,
