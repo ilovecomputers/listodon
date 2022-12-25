@@ -1,18 +1,3 @@
-#graph-container {
-  height: 800px;
-  width: 100%;
-  display: none;
-}
-
-#loadbar {
-  visibility:hidden;
-  margin-top: 20px;
-}
-
-#btn_load, #btn_clr {
+button[name=fetch], button[name=clear] {
  display:none; 
-}
-
-.button {
- margin-right: .5rem; 
 }
