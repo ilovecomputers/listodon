@@ -56,7 +56,7 @@ function fetch_followings(url, done) {
 	request.send();
 }
 
-import {MastodonOAuth} from './modules/MastodonAPI/MastodonOAuth.js'
+import {MastodonOAuth} from './modules/MastodonOAuth/MastodonOAuth.js'
 
 const mastodonOAuth = new MastodonOAuth();
 
