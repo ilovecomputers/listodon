@@ -129,4 +129,8 @@ export class MastodonOAuth {
 		this.#clientSecret = undefined;
 		localStorage.removeItem(MastodonOAuth.#SECRET_LOCALSTORAGE_KEY);
 	}
+
+	getAccessToken() {
+		return this.#accessToken;
+	}
 }

@@ -1,30 +1,31 @@
 export class MastodonAPI {
-	static fetchFollowings(url, done) {
-		let api_url = url + "&access_token=" + localStorage.getItem("MASTODON_ACCESS_TOKEN");
 
-		const request = new XMLHttpRequest();
-		request.open('GET', api_url, true);
+	/**
+	 * @type MastodonOAuth
+	 */
+	#mastoOAuth;
 
-		request.onload = function () {
-			if (request.status >= 200 && request.status < 400) {
-				const data = JSON.parse(request.responseText);
-				done(data);
 
-				let next = (MastodonAPI.parseLinkHeader(request.getResponseHeader('Link'))['next']);
-				if (next) {
-					MastodonAPI.fetchFollowings(next, done);
+	constructor(mastoOAuth) {
+		this.#mastoOAuth = mastoOAuth;
+	}
+
+	async fetchFollowings(url) {
+		let apiURL = url + "&access_token=" + this.#mastoOAuth.getAccessToken();
+		const response = await fetch(apiURL);
+		if (response.ok) {
+			let followings = await response.json();
+			let next = (MastodonAPI.#parseLinkHeader(response.headers.get('link'))['next']);
+			if (next) {
+				const moreFollowings = await this.fetchFollowings(next);
+				if (Array.isArray(moreFollowings)) {
+					return followings.concat(moreFollowings);
 				}
-
-			} else {
-				console.log("Error with " + url + " request");
 			}
-		};
-
-		request.onerror = function () {
-			// There was a connection error of some sort
-
-		};
-		request.send();
+			return followings;
+		} else {
+			console.log("Error with " + url + " request");
+		}
 	}
 
 	/**
@@ -37,7 +38,7 @@ export class MastodonAPI {
 	 *
 	 * @param {string} header
 	 */
-	static parseLinkHeader(header) {
+	static #parseLinkHeader(header) {
 		if (!header) return "";
 		const linkexp = /<[^>]*>\s*(\s*;\s*[^\(\)<>@,;:"\/\[\]\?={} \t]+=(([^\(\)<>@,;:"\/\[\]\?={} \t]+)|("[^"]*")))*(,|$)/g;
 		const paramexp = /[^\(\)<>@,;:"\/\[\]\?={} \t]+=(([^\(\)<>@,;:"\/\[\]\?={} \t]+)|("[^"]*"))/g;

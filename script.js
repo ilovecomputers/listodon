@@ -2,6 +2,7 @@ import {MastodonOAuth} from './modules/MastodonOAuth/MastodonOAuth.js'
 import {MastodonAPI} from "./modules/MastodonAPI/MastodonAPI.js";
 
 const mastodonOAuth = new MastodonOAuth();
+const mastodonAPI = new MastodonAPI(mastodonOAuth);
 
 if (mastodonOAuth.isRedirected()) {
 	document.querySelector("input").value = localStorage.getItem("MASTODON_URL");
@@ -31,9 +32,8 @@ clearButtonElement.addEventListener("click", () => {
 	mastodonOAuth.clearStoredFields();
 });
 
-document.querySelector('button[name=fetch]').addEventListener("click", () => {
+document.querySelector('button[name=fetch]').addEventListener("click", async () => {
 	let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/" + localStorage.getItem("MASTODON_USER") + "/following?limit=80";
-	MastodonAPI.fetchFollowings(url, (follows) => {
-		console.log('Follows', follows)
-	});
+	const followings = await mastodonAPI.fetchFollowings(url);
+	console.log('Following:', followings)
 });
