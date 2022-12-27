@@ -56,16 +56,19 @@ export class MastodonOAuth {
 			website: MastodonOAuth.#REDIRECT_URL,
 			scopes: scopes
 		};
-		FetchUtil.post(appsURL, args, data => {
-			this.#mastodonURL = mastodonURL;
-			localStorage.setItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY, this.#mastodonURL);
-			this.#clientID = data.client_id;
-			localStorage.setItem(MastodonOAuth.#ID_LOCALSTORAGE_KEY, this.#clientID);
-			this.#clientSecret = data.client_secret;
-			localStorage.setItem(MastodonOAuth.#SECRET_LOCALSTORAGE_KEY, this.#clientSecret);
-			window.location.href = mastodonURL + "/oauth/authorize?client_id=" + this.#clientID + "&redirect_uri="
-					+ MastodonOAuth.#REDIRECT_URL + "&response_type=code&scope=" + scopes;
-		});
+		const data = await FetchUtil.post(appsURL, args);
+		if (!data) {
+			return;
+		}
+
+		this.#mastodonURL = mastodonURL;
+		localStorage.setItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY, this.#mastodonURL);
+		this.#clientID = data.client_id;
+		localStorage.setItem(MastodonOAuth.#ID_LOCALSTORAGE_KEY, this.#clientID);
+		this.#clientSecret = data.client_secret;
+		localStorage.setItem(MastodonOAuth.#SECRET_LOCALSTORAGE_KEY, this.#clientSecret);
+		window.location.href = mastodonURL + "/oauth/authorize?client_id=" + this.#clientID + "&redirect_uri="
+				+ MastodonOAuth.#REDIRECT_URL + "&response_type=code&scope=" + scopes;
 	}
 
 	async getTokenOnRedirect() {
@@ -85,17 +88,23 @@ export class MastodonOAuth {
 			grant_type: "authorization_code",
 			code: code
 		};
-		FetchUtil.post(url2, args2, data => {
-			localStorage.setItem("MASTODON_ACCESS_TOKEN", data.access_token);
-			FetchUtil.get(
-					localStorage.getItem("MASTODON_URL")
-					+ "/api/v1/accounts/verify_credentials/?access_token="
-					+ localStorage.getItem("MASTODON_ACCESS_TOKEN"),
-					(user) => {
-						localStorage.setItem("MASTODON_USER", user.id);
-					}
-			);
-		});
+		const data = await FetchUtil.post(url2, args2);
+		if (!data) {
+			return;
+		}
+
+		localStorage.setItem("MASTODON_ACCESS_TOKEN", data.access_token);
+
+		const user = await FetchUtil.get(
+				localStorage.getItem("MASTODON_URL")
+				+ "/api/v1/accounts/verify_credentials/?access_token="
+				+ localStorage.getItem("MASTODON_ACCESS_TOKEN")
+		);
+		if (!user) {
+			return;
+		}
+
+		localStorage.setItem("MASTODON_USER", user.id);
 	}
 
 	isRedirected() {
