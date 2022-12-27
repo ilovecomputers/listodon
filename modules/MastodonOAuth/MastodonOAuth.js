@@ -12,7 +12,7 @@ export class MastodonOAuth {
 	/**
 	 * @type {string}
 	 */
-	#mastodonURL;
+	#mastoURL;
 
 	/**
 	 * @type {string}
@@ -36,7 +36,7 @@ export class MastodonOAuth {
 
 
 	constructor() {
-		this.#mastodonURL = localStorage.getItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY);
+		this.#mastoURL = localStorage.getItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY);
 		this.#clientID = localStorage.getItem(MastodonOAuth.#ID_LOCALSTORAGE_KEY);
 		this.#clientSecret = localStorage.getItem(MastodonOAuth.#SECRET_LOCALSTORAGE_KEY);
 		this.#userID = localStorage.getItem(MastodonOAuth.#USER_LOCALSTORAGE_KEY);
@@ -45,10 +45,10 @@ export class MastodonOAuth {
 
 	/**
 	 * Register app and redirect user to ask them for authorization
-	 * @param {string} mastodonURL instance url of this format https://example.com (no ending '/')
+	 * @param {string} mastoURL instance url of this format https://example.com (no ending '/')
 	 */
-	async authorize(mastodonURL) {
-		const appsURL = mastodonURL + "/api/v1/apps";
+	async authorize(mastoURL) {
+		const appsURL = mastoURL + "/api/v1/apps";
 		const scopes = "read:accounts read:lists write:lists";
 		const args = {
 			client_name: "Listodon",
@@ -61,13 +61,13 @@ export class MastodonOAuth {
 			return;
 		}
 
-		this.#mastodonURL = mastodonURL;
-		localStorage.setItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY, this.#mastodonURL);
+		this.#mastoURL = mastoURL;
+		localStorage.setItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY, this.#mastoURL);
 		this.#clientID = data.client_id;
 		localStorage.setItem(MastodonOAuth.#ID_LOCALSTORAGE_KEY, this.#clientID);
 		this.#clientSecret = data.client_secret;
 		localStorage.setItem(MastodonOAuth.#SECRET_LOCALSTORAGE_KEY, this.#clientSecret);
-		window.location.href = mastodonURL + "/oauth/authorize?client_id=" + this.#clientID + "&redirect_uri="
+		window.location.href = mastoURL + "/oauth/authorize?client_id=" + this.#clientID + "&redirect_uri="
 				+ MastodonOAuth.#REDIRECT_URL + "&response_type=code&scope=" + scopes;
 	}
 
@@ -80,7 +80,7 @@ export class MastodonOAuth {
 				window.location.origin + window.location.pathname + "?code=",
 				""
 		);
-		const url2 = this.#mastodonURL + "/oauth/token";
+		const url2 = this.#mastoURL + "/oauth/token";
 		const args2 = {
 			client_id: this.#clientID,
 			client_secret: this.#clientSecret,
@@ -112,7 +112,7 @@ export class MastodonOAuth {
 	}
 
 	isAuthorized() {
-		return !!this.#mastodonURL
+		return !!this.#mastoURL
 				&& !!this.#clientID
 				&& !!this.#clientSecret;
 	}
@@ -120,7 +120,7 @@ export class MastodonOAuth {
 	clearStoredFields() {
 		this.#userID = undefined;
 		localStorage.removeItem(MastodonOAuth.#USER_LOCALSTORAGE_KEY);
-		this.#mastodonURL = undefined;
+		this.#mastoURL = undefined;
 		localStorage.removeItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY);
 		this.#accessToken = undefined;
 		localStorage.removeItem(MastodonOAuth.#ACCESS_TOKEN_LOCALSTORAGE_KEY);
