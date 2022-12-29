@@ -61,12 +61,9 @@ export class MastodonOAuth {
 			return;
 		}
 
-		this.#mastoURL = mastoURL;
-		localStorage.setItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY, this.#mastoURL);
-		this.#clientID = data.client_id;
-		localStorage.setItem(MastodonOAuth.#ID_LOCALSTORAGE_KEY, this.#clientID);
-		this.#clientSecret = data.client_secret;
-		localStorage.setItem(MastodonOAuth.#SECRET_LOCALSTORAGE_KEY, this.#clientSecret);
+		this.#setURL(mastoURL);
+		this.#setClientID(data.client_id);
+		this.#setClientSecret(data.client_secret);
 		window.location.href = mastoURL + "/oauth/authorize?client_id=" + this.#clientID + "&redirect_uri="
 				+ MastodonOAuth.#REDIRECT_URL + "&response_type=code&scope=" + scopes;
 	}
@@ -93,18 +90,15 @@ export class MastodonOAuth {
 			return;
 		}
 
-		localStorage.setItem("MASTODON_ACCESS_TOKEN", data.access_token);
-
+		this.#setAccessToken(data.access_token);
 		const user = await FetchUtil.get(
-				localStorage.getItem("MASTODON_URL")
-				+ "/api/v1/accounts/verify_credentials/?access_token="
-				+ localStorage.getItem("MASTODON_ACCESS_TOKEN")
+				this.getURL() + "/api/v1/accounts/verify_credentials/?access_token=" + this.getAccessToken()
 		);
 		if (!user) {
 			return;
 		}
 
-		localStorage.setItem("MASTODON_USER", user.id);
+		this.#setUser(user.id);
 	}
 
 	isRedirected() {
@@ -132,5 +126,38 @@ export class MastodonOAuth {
 
 	getAccessToken() {
 		return this.#accessToken;
+	}
+
+	#setAccessToken(accessToken) {
+		this.#accessToken = accessToken;
+		localStorage.setItem("MASTODON_ACCESS_TOKEN", accessToken);
+	}
+
+	getUser() {
+		return this.#userID;
+	}
+
+	#setUser(userID) {
+		this.#userID = userID
+		localStorage.setItem("MASTODON_USER", userID);
+	}
+
+	getURL() {
+		return this.#mastoURL;
+	}
+
+	#setURL(mastoURL) {
+		this.#mastoURL = mastoURL;
+		localStorage.setItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY, this.#mastoURL);
+	}
+
+	#setClientID(clientID) {
+		this.#clientID = clientID;
+		localStorage.setItem(MastodonOAuth.#ID_LOCALSTORAGE_KEY, this.#clientID);
+	}
+
+	#setClientSecret(clientSecret) {
+		this.#clientSecret = clientSecret;
+		localStorage.setItem(MastodonOAuth.#SECRET_LOCALSTORAGE_KEY, this.#clientSecret);
 	}
 }

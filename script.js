@@ -5,12 +5,12 @@ const mastoOAuth = new MastodonOAuth();
 const mastoAPI = new MastodonAPI(mastoOAuth);
 
 if (mastoOAuth.isRedirected()) {
-	document.querySelector("input").value = localStorage.getItem("MASTODON_URL");
+	document.querySelector("input").value = mastoOAuth.getURL();
 }
 await mastoOAuth.getTokenOnRedirect();
 
 if (mastoOAuth.isAuthorized()) {
-	document.querySelector("input").value = localStorage.getItem("MASTODON_URL");
+	document.querySelector("input").value = mastoOAuth.getURL();
 	document.querySelector("button[name=fetch]").style = "display:initial;";
 	document.querySelector("button[type=submit]").style = "display:none;";
 	document.querySelector("button[name=clear]").style = "display:initial;";
@@ -33,7 +33,7 @@ clearButtonElement.addEventListener("click", () => {
 });
 
 document.querySelector('button[name=fetch]').addEventListener("click", async () => {
-	let url = localStorage.getItem("MASTODON_URL") + "/api/v1/accounts/" + localStorage.getItem("MASTODON_USER") + "/following?limit=80";
+	let url = mastoOAuth.getURL() + "/api/v1/accounts/" + mastoOAuth.getUser() + "/following?limit=80";
 	const followings = await mastoAPI.fetchFollowings(url);
 	console.log('Following:', followings)
 });
