@@ -21,14 +21,16 @@
     <a href="https://takahashim.github.io/mastodon-access-token/">Access Token Generator</a>
 </h4>
 
-<form method="post" action="#">
+<form method="post" action="#" is="masto-auth-form">
     <label for="mastodon_url">Mastodon URL (https://sfba.social, https://hachyderm.io, …)</label>
 <!--    TODO: make input type="url" in order to validate URL format-->
-    <input class="input is-primary" type="text" id="mastodon_url" placeholder="https://mstdn.jp" required>
+    <input type="text" id="mastodon_url" placeholder="https://mstdn.jp" required>
     <button type="submit">Get Access Token</button>
+    <button type="button" name="clear">Clear Tokens from Local Storage</button>
+<!--    TODO: figure out strategy for pulling this button out of this element
+                maybe the form can dispatch an event that it is authorized-->
+    <button type="button" name="fetch">Fetch Followings</button>
 </form>
-<button type="button" name="clear">Clear Tokens from Local Storage</button>
-<button type="button" name="fetch">Fetch Followings</button>
 
 
 <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
