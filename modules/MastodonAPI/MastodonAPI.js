@@ -1,18 +1,26 @@
-export class MastodonAPI {
+import {FetchUtil} from "../FetchUtil/FetchUtil.js";
 
+export class MastodonAPI {
 	/**
-	 * @type MastodonOAuth
+	 * @type {MastodonOAuth}
 	 */
 	#mastoOAuth;
 
+	/**
+	 * @type {string}
+	 */
+	#userID;
 
 	constructor(mastoOAuth) {
 		this.#mastoOAuth = mastoOAuth;
 	}
 
 	async fetchFollowings(url) {
-		let apiURL = url + "&access_token=" + this.#mastoOAuth.getAccessToken();
-		const response = await fetch(apiURL);
+		if (!url) {
+			url = this.#getAccessedURL("/api/v1/accounts/" + this.#userID + "/following");
+			url.searchParams.set('limit', '80');
+		}
+		const response = await fetch(url);
 		if (response.ok) {
 			let followings = await response.json();
 			let next = (MastodonAPI.#parseLinkHeader(response.headers.get('link'))['next']);
@@ -26,6 +34,26 @@ export class MastodonAPI {
 		} else {
 			console.log("Error with " + url + " request");
 		}
+	}
+
+	async getUserID() {
+		if (!!this.#userID) {
+			return;
+		}
+
+		const user = await FetchUtil.get(this.#getAccessedURL("/api/v1/accounts/verify_credentials/"));
+		this.#userID = user.id;
+	}
+
+	/**
+	 * @param {string} pathname
+	 * @returns {URL}
+	 */
+	#getAccessedURL(pathname) {
+		const url = new URL(this.#mastoOAuth.getURL());
+		url.pathname = pathname;
+		url.searchParams.set('access_token', this.#mastoOAuth.getAccessToken());
+		return url;
 	}
 
 	/**

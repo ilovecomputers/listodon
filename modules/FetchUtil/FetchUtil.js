@@ -17,6 +17,13 @@ export class FetchUtil {
 		}
 	}
 
+	/**
+	 * These TODOs apply to post as well
+	 * TODO: return response so {@link MastodonAPI#fetchFollowings} can use this method
+	 * TODO: throw error if response is not ok
+	 * @param {string|URL} url
+	 * @returns {Promise<Object>}
+	 */
 	static async get(url) {
 		try {
 			const response = await fetch(url);

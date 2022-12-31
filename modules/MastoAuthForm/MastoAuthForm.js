@@ -3,12 +3,12 @@ import {MastodonOAuth} from "../MastodonOAuth/MastodonOAuth.js";
 export class MastoAuthForm extends HTMLFormElement {
 
 	/**
-	 * @type MastodonOAuth
+	 * @type {MastodonOAuth}
 	 */
 	#mastoOAuth;
 
 	/**
-	 * @type Element
+	 * @type {Element}
 	 */
 	#clearButtonElement;
 
@@ -21,7 +21,6 @@ export class MastoAuthForm extends HTMLFormElement {
 
 		if (this.#mastoOAuth.isAuthorized()) {
 			this.querySelector("input").value = this.#mastoOAuth.getURL();
-			this.querySelector("button[name=fetch]").style = "display:initial;"; //TODO: move this line to script
 			this.querySelector("button[type=submit]").style = "display:none;";
 			this.querySelector("button[name=clear]").style = "display:initial;";
 		}
@@ -34,6 +33,7 @@ export class MastoAuthForm extends HTMLFormElement {
 
 	async getToken() {
 		await this.#mastoOAuth.getTokenOnRedirect();
+		return this.#mastoOAuth.hasToken();
 	}
 
 	async #authorize(event) {
@@ -47,5 +47,12 @@ export class MastoAuthForm extends HTMLFormElement {
 		this.querySelector("button[type=submit]").style = "display:initial;";
 		this.#clearButtonElement.style = "display:none;";
 		this.#mastoOAuth.clearStoredFields();
+	}
+
+	/**
+	 * @returns {MastodonOAuth}
+	 */
+	getMastOAuth() {
+		return this.#mastoOAuth;
 	}
 }

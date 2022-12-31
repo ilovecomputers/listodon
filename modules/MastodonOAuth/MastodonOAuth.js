@@ -5,7 +5,6 @@ export class MastodonOAuth {
 	static #URL_LOCALSTORAGE_KEY = "MASTODON_URL";
 	static #ID_LOCALSTORAGE_KEY = "MASTODON_CLIENT_ID";
 	static #SECRET_LOCALSTORAGE_KEY = "MASTODON_CLIENT_SECRET";
-	static #USER_LOCALSTORAGE_KEY = "MASTODON_USER";
 	static #ACCESS_TOKEN_LOCALSTORAGE_KEY = "MASTODON_ACCESS_TOKEN";
 	static #REDIRECT_URL = "https://listodon.glitch.me/";
 
@@ -27,11 +26,6 @@ export class MastodonOAuth {
 	/**
 	 * @type {string}
 	 */
-	#userID;
-
-	/**
-	 * @type {string}
-	 */
 	#accessToken;
 
 
@@ -39,12 +33,12 @@ export class MastodonOAuth {
 		this.#mastoURL = localStorage.getItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY);
 		this.#clientID = localStorage.getItem(MastodonOAuth.#ID_LOCALSTORAGE_KEY);
 		this.#clientSecret = localStorage.getItem(MastodonOAuth.#SECRET_LOCALSTORAGE_KEY);
-		this.#userID = localStorage.getItem(MastodonOAuth.#USER_LOCALSTORAGE_KEY);
 		this.#accessToken = localStorage.getItem(MastodonOAuth.#ACCESS_TOKEN_LOCALSTORAGE_KEY);
 	}
 
 	/**
 	 * Register app and redirect user to ask them for authorization
+	 * TODO: turn mastoURL into {@link URL}
 	 * @param {string} mastoURL instance url of this format https://example.com (no ending '/')
 	 */
 	async authorize(mastoURL) {
@@ -91,16 +85,6 @@ export class MastodonOAuth {
 		}
 
 		this.#setAccessToken(data.access_token);
-
-		//TODO: move user fetching to MastoAPI
-		const user = await FetchUtil.get(
-				this.getURL() + "/api/v1/accounts/verify_credentials/?access_token=" + this.getAccessToken()
-		);
-		if (!user) {
-			return;
-		}
-
-		this.#setUser(user.id);
 	}
 
 	isRedirected() {
@@ -113,9 +97,11 @@ export class MastodonOAuth {
 				&& !!this.#clientSecret;
 	}
 
+	hasToken() {
+		return !!this.#accessToken;
+	}
+
 	clearStoredFields() {
-		this.#userID = undefined;
-		localStorage.removeItem(MastodonOAuth.#USER_LOCALSTORAGE_KEY);
 		this.#mastoURL = undefined;
 		localStorage.removeItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY);
 		this.#accessToken = undefined;
@@ -133,15 +119,6 @@ export class MastodonOAuth {
 	#setAccessToken(accessToken) {
 		this.#accessToken = accessToken;
 		localStorage.setItem("MASTODON_ACCESS_TOKEN", accessToken);
-	}
-
-	getUser() {
-		return this.#userID;
-	}
-
-	#setUser(userID) {
-		this.#userID = userID
-		localStorage.setItem("MASTODON_USER", userID);
 	}
 
 	getURL() {
