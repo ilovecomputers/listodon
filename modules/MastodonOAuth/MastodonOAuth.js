@@ -91,6 +91,8 @@ export class MastodonOAuth {
 		}
 
 		this.#setAccessToken(data.access_token);
+
+		//TODO: move user fetching to MastoAPI
 		const user = await FetchUtil.get(
 				this.getURL() + "/api/v1/accounts/verify_credentials/?access_token=" + this.getAccessToken()
 		);

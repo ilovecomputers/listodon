@@ -18,19 +18,22 @@ export class MastoAuthForm extends HTMLFormElement {
 		if (this.#mastoOAuth.isRedirected()) {
 			this.querySelector("input").value = this.#mastoOAuth.getURL();
 		}
-		this.#mastoOAuth.getTokenOnRedirect().then(() => {
-			if (this.#mastoOAuth.isAuthorized()) {
-				this.querySelector("input").value = this.#mastoOAuth.getURL();
-				this.querySelector("button[name=fetch]").style = "display:initial;";
-				this.querySelector("button[type=submit]").style = "display:none;";
-				this.querySelector("button[name=clear]").style = "display:initial;";
-			}
-		});
+
+		if (this.#mastoOAuth.isAuthorized()) {
+			this.querySelector("input").value = this.#mastoOAuth.getURL();
+			this.querySelector("button[name=fetch]").style = "display:initial;"; //TODO: move this line to script
+			this.querySelector("button[type=submit]").style = "display:none;";
+			this.querySelector("button[name=clear]").style = "display:initial;";
+		}
 
 		this.addEventListener('submit', this.#authorize);
 
 		this.#clearButtonElement = this.querySelector("button[name=clear]");
 		this.#clearButtonElement.addEventListener("click", this.#clear.bind(this));
+	}
+
+	async getToken() {
+		await this.#mastoOAuth.getTokenOnRedirect();
 	}
 
 	async #authorize(event) {
