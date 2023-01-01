@@ -3,6 +3,11 @@ import {MastodonOAuth} from "../MastodonOAuth/MastodonOAuth.js";
 export class MastoAuthForm extends HTMLFormElement {
 
 	/**
+	 * @type {string}
+	 */
+	static CLEAR_EVENT = 'MastoAuthForm#clear';
+
+	/**
 	 * @type {MastodonOAuth}
 	 */
 	#mastoOAuth;
@@ -47,6 +52,7 @@ export class MastoAuthForm extends HTMLFormElement {
 		this.querySelector("button[type=submit]").style = "display:initial;";
 		this.#clearButtonElement.style = "display:none;";
 		this.#mastoOAuth.clearStoredFields();
+		this.dispatchEvent(new CustomEvent(MastoAuthForm.CLEAR_EVENT));
 	}
 
 	/**

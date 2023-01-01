@@ -20,5 +20,6 @@ if (hasToken) {
 		const followings = await mastoAPI.fetchFollowings();
 		console.log('Following:', followings)
 	});
+	mastoAuthForm.addEventListener(MastoAuthForm.CLEAR_EVENT, () => fetchFollowersButton.style = "display:none;");
 }
 
