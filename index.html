@@ -23,8 +23,7 @@
 
 <form method="post" action="#" is="masto-auth-form">
     <label for="mastodon_url">Mastodon URL (https://sfba.social, https://hachyderm.io, …)</label>
-<!--    TODO: make input type="url" in order to validate URL format-->
-    <input type="text" id="mastodon_url" placeholder="https://mstdn.jp" required>
+    <input type="url" id="mastodon_url" placeholder="https://mastodon.social" required>
     <button type="submit">Get Access Token</button>
     <button type="button" name="clear">Clear Tokens from Local Storage</button>
 </form>

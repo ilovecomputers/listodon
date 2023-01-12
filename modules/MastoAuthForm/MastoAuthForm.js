@@ -43,7 +43,7 @@ export class MastoAuthForm extends HTMLFormElement {
 
 	async #authorize(event) {
 		event.preventDefault();
-		const mastoURL = this.querySelector("input").value.replace(/\/$/, '');
+		const mastoURL = this.querySelector("input").value;
 		await this.#mastoOAuth.authorize(mastoURL);
 	}
 

@@ -38,11 +38,11 @@ export class MastodonOAuth {
 
 	/**
 	 * Register app and redirect user to ask them for authorization
-	 * TODO: turn mastoURL into {@link URL}
-	 * @param {string} mastoURL instance url of this format https://example.com (no ending '/')
+	 * @param {string} mastoURLString instance url
 	 */
-	async authorize(mastoURL) {
-		const appsURL = mastoURL + "/api/v1/apps";
+	async authorize(mastoURLString) {
+		const appsURL = new URL(mastoURLString);
+		appsURL.pathname = "/api/v1/apps";
 		const scopes = "read:accounts read:lists write:lists";
 		const appsBody = {
 			client_name: "Listodon",
@@ -56,11 +56,16 @@ export class MastodonOAuth {
 			return;
 		}
 
-		this.#setURL(mastoURL);
+		this.#setURL(mastoURLString);
 		this.#setClientID(data.client_id);
 		this.#setClientSecret(data.client_secret);
-		window.location.href = mastoURL + "/oauth/authorize?client_id=" + this.#clientID + "&redirect_uri="
-				+ MastodonOAuth.#REDIRECT_URL + "&response_type=code&scope=" + scopes;
+		const redirectURL = new URL(mastoURLString);
+		redirectURL.pathname = "/oauth/authorize";
+		redirectURL.searchParams.set('client_id', this.#clientID);
+		redirectURL.searchParams.set('redirect_uri', MastodonOAuth.#REDIRECT_URL);
+		redirectURL.searchParams.set('response_type', 'code');
+		redirectURL.searchParams.set('scope', scopes);
+		window.location.href = redirectURL.toString();
 	}
 
 	async getTokenOnRedirect() {
@@ -68,11 +73,9 @@ export class MastodonOAuth {
 			return;
 		}
 
-		const code = window.location.href.replace(
-				window.location.origin + window.location.pathname + "?code=",
-				""
-		);
-		const tokenURL = this.#mastoURL + "/oauth/token";
+		const code = new URL(window.location).searchParams.get('code');
+		const tokenURL = new URL(this.#mastoURL);
+		tokenURL.pathname = "/oauth/token";
 		const tokenBody = {
 			client_id: this.#clientID,
 			client_secret: this.#clientSecret,
@@ -129,7 +132,7 @@ export class MastodonOAuth {
 
 	#setURL(mastoURL) {
 		this.#mastoURL = mastoURL;
-		localStorage.setItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY, this.#mastoURL);
+		localStorage.setItem(MastodonOAuth.#URL_LOCALSTORAGE_KEY, this.#mastoURL.toString());
 	}
 
 	#setClientID(clientID) {
