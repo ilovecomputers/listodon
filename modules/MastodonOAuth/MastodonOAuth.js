@@ -44,13 +44,14 @@ export class MastodonOAuth {
 	async authorize(mastoURL) {
 		const appsURL = mastoURL + "/api/v1/apps";
 		const scopes = "read:accounts read:lists write:lists";
-		const args = {
+		const appsBody = {
 			client_name: "Listodon",
 			redirect_uris: MastodonOAuth.#REDIRECT_URL,
 			website: MastodonOAuth.#REDIRECT_URL,
 			scopes: scopes
 		};
-		const data = await FetchUtil.post(appsURL, args);
+		const response = await FetchUtil.post(appsURL, appsBody);
+		const data = await response.json();
 		if (!data) {
 			return;
 		}
@@ -71,15 +72,16 @@ export class MastodonOAuth {
 				window.location.origin + window.location.pathname + "?code=",
 				""
 		);
-		const url2 = this.#mastoURL + "/oauth/token";
-		const args2 = {
+		const tokenURL = this.#mastoURL + "/oauth/token";
+		const tokenBody = {
 			client_id: this.#clientID,
 			client_secret: this.#clientSecret,
 			redirect_uri: MastodonOAuth.#REDIRECT_URL,
 			grant_type: "authorization_code",
 			code: code
 		};
-		const data = await FetchUtil.post(url2, args2);
+		const response = await FetchUtil.post(tokenURL, tokenBody);
+		const data = await response.json();
 		if (!data) {
 			return;
 		}

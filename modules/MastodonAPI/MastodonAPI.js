@@ -41,7 +41,8 @@ export class MastodonAPI {
 			return;
 		}
 
-		const user = await FetchUtil.get(this.#getAccessedURL("/api/v1/accounts/verify_credentials/"));
+		const response = await FetchUtil.get(this.#getAccessedURL("/api/v1/accounts/verify_credentials/"));
+		const user = await response.json();
 		this.#userID = user.id;
 	}
 

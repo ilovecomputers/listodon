@@ -1,37 +1,43 @@
 export class FetchUtil {
 
-	static async post(url, args) {
-		try {
-			const response = await fetch(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': "application/json"
-				},
-				body: JSON.stringify(args)
-			});
-			if (response.ok) {
-				return response.json();
-			}
-		} catch (error) {
-			console.log("There was a connection error of some sort", error);
-		}
+	/**
+	 * @param {string|URL} url
+	 * @param {Object} body
+	 * @returns {Promise<Response>}
+	 */
+	static async post(url, body) {
+		return FetchUtil.#fetchResponse(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': "application/json"
+			},
+			body: JSON.stringify(body)
+		});
 	}
 
 	/**
 	 * These TODOs apply to post as well
-	 * TODO: return response so {@link MastodonAPI#fetchFollowings} can use this method
-	 * TODO: throw error if response is not ok
 	 * @param {string|URL} url
-	 * @returns {Promise<Object>}
+	 * @returns {Promise<Response>}
 	 */
 	static async get(url) {
+		return FetchUtil.#fetchResponse(url);
+	}
+
+	/**
+	 * TODO: throw error if response is not ok
+	 * @param {string|URL} url
+	 * @param {RequestInit} [init]
+	 * @returns {Promise<Response>}
+	 */
+	static async #fetchResponse(url, init) {
 		try {
-			const response = await fetch(url);
-			if (response.ok) {
-				return response.json();
-			} else {
+			const response = await fetch(url, init);
+			if (!response.ok) {
 				console.log("Error with get request");
 			}
+
+			return response;
 		} catch (error) {
 			console.log("There was a connection error of some sort", error);
 		}
