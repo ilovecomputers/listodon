@@ -7,9 +7,9 @@ export class FetchUtil {
 	 */
 	static async post(url, body) {
 		return FetchUtil.#fetchResponse(url, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-				'Content-Type': "application/json"
+				"Content-Type": "application/json"
 			},
 			body: JSON.stringify(body)
 		});
@@ -33,12 +33,12 @@ export class FetchUtil {
 		try {
 			response = await fetch(url, init);
 		} catch (error) {
-			error.message = "There was a connection error of some sort" + error.message
-			throw error
+			error.message = "There was a connection error of some sort" + error.message;
+			throw error;
 		}
 
 		if (!response.ok) {
-			throw new Error("Error with get request")
+			throw new Error(`Error with ${init ? init.method : "GET"} request: ${url}`);
 		}
 
 		return response;

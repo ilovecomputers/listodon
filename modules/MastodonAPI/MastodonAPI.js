@@ -20,20 +20,16 @@ export class MastodonAPI {
 			url = this.#getAccessedURL("/api/v1/accounts/" + this.#userID + "/following");
 			url.searchParams.set('limit', '80');
 		}
-		const response = await fetch(url);
-		if (response.ok) {
-			let followings = await response.json();
-			let next = (MastodonAPI.#parseLinkHeader(response.headers.get('link'))['next']);
-			if (next) {
-				const moreFollowings = await this.fetchFollowings(next);
-				if (Array.isArray(moreFollowings)) {
-					return followings.concat(moreFollowings);
-				}
+		const response = await FetchUtil.get(url);
+		let followings = await response.json();
+		let next = (MastodonAPI.#parseLinkHeader(response.headers.get('link'))['next']);
+		if (next) {
+			const moreFollowings = await this.fetchFollowings(next);
+			if (Array.isArray(moreFollowings)) {
+				return followings.concat(moreFollowings);
 			}
-			return followings;
-		} else {
-			console.log("Error with " + url + " request");
 		}
+		return followings;
 	}
 
 	async getUserID() {
