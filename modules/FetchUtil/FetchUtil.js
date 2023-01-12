@@ -16,7 +16,6 @@ export class FetchUtil {
 	}
 
 	/**
-	 * These TODOs apply to post as well
 	 * @param {string|URL} url
 	 * @returns {Promise<Response>}
 	 */
@@ -25,21 +24,23 @@ export class FetchUtil {
 	}
 
 	/**
-	 * TODO: throw error if response is not ok
 	 * @param {string|URL} url
 	 * @param {RequestInit} [init]
 	 * @returns {Promise<Response>}
 	 */
 	static async #fetchResponse(url, init) {
+		let response;
 		try {
-			const response = await fetch(url, init);
-			if (!response.ok) {
-				console.log("Error with get request");
-			}
-
-			return response;
+			response = await fetch(url, init);
 		} catch (error) {
-			console.log("There was a connection error of some sort", error);
+			error.message = "There was a connection error of some sort" + error.message
+			throw error
 		}
+
+		if (!response.ok) {
+			throw new Error("Error with get request")
+		}
+
+		return response;
 	}
 }
