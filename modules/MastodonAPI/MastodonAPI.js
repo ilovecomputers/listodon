@@ -15,21 +15,38 @@ export class MastodonAPI {
 		this.#mastoOAuth = mastoOAuth;
 	}
 
-	async fetchFollowings(url) {
-		if (!url) {
-			url = this.#getAccessedURL("/api/v1/accounts/" + this.#userID + "/following");
+	async fetchFollowings() {
+		return this.#fetchListOfUsers(this.#getAccessedURL("/api/v1/accounts/" + this.#userID + "/following"));
+	}
+
+	/**
+	 * @returns {Promise<Map<Object, Array>>}
+	 */
+	async fetchLists() {
+		const lists = new Map();
+		const response = await FetchUtil.get(this.#getAccessedURL("/api/v1/lists"));
+		const listsResponse = await response.json();
+		for (const list of listsResponse) {
+			const accounts = await this.#fetchListOfUsers(this.#getAccessedURL(`api/v1/lists/${list.id}/accounts`));
+			lists.set(list, accounts);
+		}
+		return lists;
+	}
+
+	async #fetchListOfUsers(url) {
+		if (!url.searchParams.has('limit')) {
 			url.searchParams.set('limit', '80');
 		}
 		const response = await FetchUtil.get(url);
-		let followings = await response.json();
+		let users = await response.json();
 		let next = (MastodonAPI.#parseLinkHeader(response.headers.get('link'))['next']);
 		if (next) {
-			const moreFollowings = await this.fetchFollowings(next);
-			if (Array.isArray(moreFollowings)) {
-				return followings.concat(moreFollowings);
+			const moreUsers = await this.#fetchListOfUsers(new URL(next));
+			if (Array.isArray(moreUsers)) {
+				return users.concat(moreUsers);
 			}
 		}
-		return followings;
+		return users;
 	}
 
 	async getUserID() {

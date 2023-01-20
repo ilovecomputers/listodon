@@ -10,16 +10,18 @@ const mastoAuthForm = document.querySelector('[is=masto-auth-form]');
 
 const hasToken = await mastoAuthForm.getToken();
 if (hasToken) {
-	const fetchFollowersButton = document.querySelector('button[name=fetch]');
-	fetchFollowersButton.style = "display:initial;";
+	const fetchButton = document.querySelector('button[name=fetch]');
+	fetchButton.style = "display:initial;";
 
 	const mastoOAuth = mastoAuthForm.getMastOAuth();
 	const mastoAPI = new MastodonAPI(mastoOAuth);
-	fetchFollowersButton.addEventListener("click", async () => {
+	fetchButton.addEventListener("click", async () => {
 		await mastoAPI.getUserID();
 		const followings = await mastoAPI.fetchFollowings();
-		console.log('Following:', followings)
+		console.log('Following:', followings);
+		const lists = await mastoAPI.fetchLists();
+		console.log('Lists:', lists);
 	});
-	mastoAuthForm.addEventListener(MastoAuthForm.CLEAR_EVENT, () => fetchFollowersButton.style = "display:none;");
+	mastoAuthForm.addEventListener(MastoAuthForm.CLEAR_EVENT, () => fetchButton.style = "display:none;");
 }
 
