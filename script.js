@@ -7,6 +7,11 @@ import {ListSelect} from "./modules/ListSelect/ListSelect.js"
  */
 const mastoAuthForm = document.querySelector('[is=masto-auth-form]');
 
+/**
+ * @type {ListSelect}
+ */
+const listSelect = document.querySelector('[is=list-select]');
+
 const hasToken = await mastoAuthForm.getToken();
 if (hasToken) {
 	const fetchButton = document.querySelector('button[name=fetch]');
@@ -19,6 +24,7 @@ if (hasToken) {
 		const followings = await mastoAPI.fetchFollowings();
 		console.log('Following:', followings);
 		const lists = await mastoAPI.fetchLists();
+		listSelect.lists = lists;
 		console.log('Lists:', lists);
 	});
 	mastoAuthForm.addEventListener(MastoAuthForm.CLEAR_EVENT, () => fetchButton.style = "display:none;");

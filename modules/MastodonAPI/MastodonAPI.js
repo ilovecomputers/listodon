@@ -20,7 +20,10 @@ export class MastodonAPI {
 	}
 
 	/**
-	 * @returns {Promise<Map<List, Array.<Account>>>}
+	 * @typedef {Map<List, Array.<Account>>} ListWithAccounts
+	 */
+	/**
+	 * @returns {Promise<ListWithAccounts>}
 	 */
 	async fetchLists() {
 		const lists = new Map();
