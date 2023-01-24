@@ -62,3 +62,5 @@ export class MastoAuthForm extends HTMLFormElement {
 		return this.#mastoOAuth;
 	}
 }
+
+customElements.define('masto-auth-form', MastoAuthForm, {extends: 'form'});

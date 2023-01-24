@@ -1,7 +1,6 @@
 import {MastodonAPI} from "./modules/MastodonAPI/MastodonAPI.js";
 import {MastoAuthForm} from "./modules/MastoAuthForm/MastoAuthForm.js";
-
-customElements.define('masto-auth-form', MastoAuthForm, {extends: 'form'});
+import {ListSelect} from "./modules/ListSelect/ListSelect.js"
 
 /**
  * @type {MastoAuthForm}
