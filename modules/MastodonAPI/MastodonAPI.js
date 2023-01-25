@@ -15,6 +15,9 @@ export class MastodonAPI {
 		this.#mastoOAuth = mastoOAuth;
 	}
 
+	/**
+	 * @returns {Promise<Array<Account>>}
+	 */
 	async fetchFollowings() {
 		return this.#fetchListOfUsers(this.#getAccessedURL("/api/v1/accounts/" + this.#userID + "/following"));
 	}
@@ -23,9 +26,10 @@ export class MastodonAPI {
 	 * @typedef {Map<List, Array.<Account>>} ListWithAccounts
 	 */
 	/**
+	 * @param {Array.<Account>} followings needed to know which users aren't in a list
 	 * @returns {Promise<ListWithAccounts>}
 	 */
-	async fetchLists() {
+	async fetchLists(followings) {
 		const lists = new Map();
 		const response = await FetchUtil.get(this.#getAccessedURL("/api/v1/lists"));
 		const listsResponse = await response.json();
@@ -33,9 +37,14 @@ export class MastodonAPI {
 			const accounts = await this.#fetchListOfUsers(this.#getAccessedURL(`api/v1/lists/${list.id}/accounts`));
 			lists.set(list, accounts);
 		}
+		lists.set({id: "-1", title: "Not in a List"}, MastodonAPI.#notInAList(followings, lists));
 		return lists;
 	}
 
+	/**
+	 * @param {URL} url
+	 * @returns {Promise<Array.<Account>>}
+	 */
 	async #fetchListOfUsers(url) {
 		if (!url.searchParams.has('limit')) {
 			url.searchParams.set('limit', '80');
@@ -52,7 +61,7 @@ export class MastodonAPI {
 		return users;
 	}
 
-	async getUserID() {
+	async setUserID() {
 		if (!!this.#userID) {
 			return;
 		}
@@ -104,4 +113,19 @@ export class MastodonAPI {
 		}
 		return rels;
 	}
+
+	/**
+	 * @param {Array.<Account>} followings
+	 * @param {ListWithAccounts} lists
+	 * @return {Array.<Account>} accounts in `followings` but not in the `lists` accounts
+	 */
+	static #notInAList(followings, lists) {
+		let listedAccounts = [];
+		for (const [, accounts] of lists) {
+			listedAccounts = listedAccounts.concat(accounts.map(account => account.acct));
+		}
+		listedAccounts = new Set(listedAccounts);
+		return followings.filter(account => !listedAccounts.has(account.acct));
+	}
+
 }

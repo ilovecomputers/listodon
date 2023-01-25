@@ -20,10 +20,10 @@ if (hasToken) {
 	const mastoOAuth = mastoAuthForm.getMastOAuth();
 	const mastoAPI = new MastodonAPI(mastoOAuth);
 	fetchButton.addEventListener("click", async () => {
-		await mastoAPI.getUserID();
+		await mastoAPI.setUserID();
 		const followings = await mastoAPI.fetchFollowings();
 		console.log('Following:', followings);
-		const lists = await mastoAPI.fetchLists();
+		const lists = await mastoAPI.fetchLists(followings);
 		listSelect.lists = lists;
 		console.log('Lists:', lists);
 	});
