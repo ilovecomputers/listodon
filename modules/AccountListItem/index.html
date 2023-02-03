@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AccountListItem</title>
+    <script type="module">
+			import {AccountListItem} from "./AccountListItem.js";
+			import {ACCOUNT} from "./mock.js";
+
+			/**
+			 * @type {AccountListItem}
+			 */
+			const accountListItem = document.createElement('account-list-item');
+
+			accountListItem.account = ACCOUNT;
+			document.querySelector('body').append(accountListItem);
+    </script>
+</head>
+<body>
+<template id="account-list-item">
+    <img/>
+    <bdi><strong></strong></bdi>
+    <p></p>
+</template>
+</body>
+</html>
