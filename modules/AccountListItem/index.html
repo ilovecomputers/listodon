@@ -13,14 +13,23 @@
 			const accountListItem = document.createElement('account-list-item');
 
 			accountListItem.account = ACCOUNT;
-			document.querySelector('body').append(accountListItem);
+			document.querySelector('div').append(accountListItem);
     </script>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        div {
+            width: 380px;
+        }
+    </style>
 </head>
 <body>
+<div></div>
 <template id="account-list-item">
     <img/>
-    <bdi><strong></strong></bdi>
-    <p></p>
+    <article>
+        <bdi><strong></strong></bdi>
+        <p></p>
+    </article>
 </template>
 </body>
 </html>

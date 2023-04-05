@@ -1,0 +1,31 @@
+account-list-item {
+    display: grid;
+    grid-template-columns: 1fr 8fr;
+    align-items: center;
+    column-gap: 0.625rem;
+    padding: 1rem;
+    background-color: rgb(68, 75, 93);
+    font-size: 0.875rem;
+}
+
+account-list-item img {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 4px;
+    object-fit: cover;
+    justify-self: center;
+}
+
+account-list-item article {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+account-list-item p {
+    margin: 0;
+    color: #9baec8;
+}
+
+account-list-item bdi {
+    color: white;
+}
