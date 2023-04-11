@@ -1,11 +1,15 @@
 account-list-item {
     display: grid;
-    grid-template-columns: 1fr 8fr;
+    grid-template-columns: 1fr 8fr 1fr;
     align-items: center;
     column-gap: 0.625rem;
     padding: 1rem;
     background-color: rgb(68, 75, 93);
     font-size: 0.875rem;
+}
+
+account-list-item[aria-selected=true], account-list-item[data-focused=true] {
+    background-color: rgb(38, 39, 128);
 }
 
 account-list-item img {
@@ -18,14 +22,21 @@ account-list-item img {
 
 account-list-item article {
     grid-column: 2;
-    grid-row: 1;
 }
 
 account-list-item p {
     margin: 0;
-    color: #9baec8;
+    color: rgb(155, 174, 200);
 }
 
 account-list-item bdi {
     color: white;
+}
+
+account-list-item[aria-selected=true]::after {
+    content: "✓";
+    color: white;
+    grid-column: 3;
+    font-size: 1.5rem;
+    font-weight: bold;
 }

@@ -10,10 +10,18 @@
 			/**
 			 * @type {AccountListItem}
 			 */
-			const accountListItem = document.createElement('account-list-item');
+			const regularAccountListItem = document.createElement('account-list-item');
+			const selectedAccountListItem = document.createElement('account-list-item');
+			const focusedAccountListItem = document.createElement('account-list-item');
 
-			accountListItem.account = ACCOUNT;
-			document.querySelector('div').append(accountListItem);
+			regularAccountListItem.account = ACCOUNT;
+			selectedAccountListItem.account = ACCOUNT;
+			focusedAccountListItem.account = ACCOUNT;
+			document.querySelectorAll('div')[0].append(regularAccountListItem);
+			document.querySelectorAll('div')[1].append(selectedAccountListItem);
+			selectedAccountListItem.setAttribute("aria-selected", "true");
+			document.querySelectorAll('div')[2].append(focusedAccountListItem);
+			focusedAccountListItem.dataset.focused = "true";
     </script>
     <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="./style.css">
@@ -24,6 +32,11 @@
     </style>
 </head>
 <body>
+<h1>Regular</h1>
+<div></div>
+<h1>Selected</h1>
+<div></div>
+<h1>Focused</h1>
 <div></div>
 <template id="account-list-item">
     <img/>
