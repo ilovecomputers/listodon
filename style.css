@@ -1,7 +1,14 @@
+@import "modules/AccountListItem/style.css";
+
 html {
- font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
 }
 
 button[name=fetch], button[name=clear] {
- display:none; 
+    display: none;
+}
+
+account-multiselect {
+    display: block;
+    width: 380px;
 }

@@ -16,7 +16,7 @@ const listSelect = document.querySelector('[is=list-select]');
 /**
  * @type {AccountMultiselect}
  */
-const accountMultiselect = document.querySelector('[is=account-multiselect]')
+const accountMultiselect = document.querySelector('account-multiselect')
 
 const hasToken = await mastoAuthForm.getToken();
 if (hasToken) {

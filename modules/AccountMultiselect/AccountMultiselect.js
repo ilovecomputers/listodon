@@ -1,4 +1,6 @@
-export class AccountMultiselect extends HTMLSelectElement {
+import '../AccountListItem/AccountListItem.js';
+
+export class AccountMultiselect extends HTMLElement {
 	/**
 	 * @type {Array.<Account>}
 	 */
@@ -6,23 +8,18 @@ export class AccountMultiselect extends HTMLSelectElement {
 
 	constructor() {
 		super();
-		this.multiple = true;
 	}
 
 	set accounts(value) {
 		this.#accounts = value;
-		if (this.#accounts.length > 15) {
-			this.size = 15
-		} else {
-			this.size = this.#accounts.length;
-		}
+		const accounts = document.createDocumentFragment();
 		for (const account of this.#accounts) {
-			const option = document.createElement("option");
-			option.value = account.id;
-			option.text = account.acct;
-			this.add(option);
+			const option = document.createElement('account-list-item');
+			option.account = account;
+			accounts.appendChild(option);
 		}
+		this.appendChild(accounts);
 	}
 }
 
-customElements.define('account-multiselect', AccountMultiselect, {extends: 'select'});
+customElements.define('account-multiselect', AccountMultiselect);
