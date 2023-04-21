@@ -1,4 +1,4 @@
-import '../AccountListItem/AccountListItem.js';
+import {ACCOUNT_SELECTED_EVENT} from "../AccountListItem/AccountListItem.js";
 
 export class AccountMultiselect extends HTMLElement {
 	/**
@@ -8,6 +8,7 @@ export class AccountMultiselect extends HTMLElement {
 
 	constructor() {
 		super();
+		this.addEventListener(ACCOUNT_SELECTED_EVENT, this.#onAccountSelect);
 	}
 
 	set accounts(value) {
@@ -19,6 +20,14 @@ export class AccountMultiselect extends HTMLElement {
 			accounts.appendChild(option);
 		}
 		this.appendChild(accounts);
+	}
+
+	#onAccountSelect(event) {
+		if (event.target.getAttribute('aria-selected') === 'true') {
+			event.target.removeAttribute('aria-selected');
+		} else {
+			event.target.setAttribute('aria-selected', 'true');
+		}
 	}
 }
 

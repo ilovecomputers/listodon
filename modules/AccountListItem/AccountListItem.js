@@ -3,6 +3,8 @@
  */
 const TEMPLATE = document.querySelector('#account-list-item');
 
+export const ACCOUNT_SELECTED_EVENT = 'accountSelected';
+
 export class AccountListItem extends HTMLElement {
 	/**
 	 * @type {Account}
@@ -14,6 +16,7 @@ export class AccountListItem extends HTMLElement {
 		if (!TEMPLATE) {
 			throw new Error('No template found for <account-list-item>');
 		}
+		this.addEventListener('click', this.#onSelect);
 	}
 
 	/**
@@ -22,6 +25,7 @@ export class AccountListItem extends HTMLElement {
 	set account(account) {
 		this.#account = account;
 		this.appendChild(this.populateTemplate(account));
+		this.addEventListener('click', this.#onSelect);
 	}
 
 	/**
@@ -39,6 +43,10 @@ export class AccountListItem extends HTMLElement {
 		const address = template.querySelector('p');
 		address.textContent = account.acct;
 		return template;
+	}
+
+	#onSelect() {
+		this.dispatchEvent(new CustomEvent(ACCOUNT_SELECTED_EVENT, {bubbles: true}));
 	}
 }
 
