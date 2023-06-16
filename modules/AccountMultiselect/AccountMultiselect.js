@@ -8,7 +8,9 @@ export class AccountMultiselect extends HTMLElement {
 
 	constructor() {
 		super();
+		this.tabIndex = 0;
 		this.addEventListener(ACCOUNT_SELECTED_EVENT, this.#onAccountSelect);
+		this.addEventListener('keydown', this.#onKeyDown);
 	}
 
 	set accounts(value) {
@@ -27,6 +29,36 @@ export class AccountMultiselect extends HTMLElement {
 			event.target.removeAttribute('aria-selected');
 		} else {
 			event.target.setAttribute('aria-selected', 'true');
+		}
+	}
+
+	#onKeyDown(event) {
+		switch (event.key) {
+			case 'ArrowDown':
+				this.#focusNextItem();
+				break;
+			case 'ArrowUp':
+				this.#focusPreviousItem();
+				break;
+		}
+	}
+
+	#focusNextItem() {
+		this.#focusItem('nextElementSibling');
+	}
+
+	#focusPreviousItem() {
+		this.#focusItem('previousElementSibling');
+	}
+
+	#focusItem(whichSibling) {
+		const focusedItems = this.querySelectorAll('account-list-item[data-focused="true"]');
+		if (focusedItems.length === 0) {
+			this.querySelector('account-list-item').dataset.focused = 'true';
+		} else {
+			const currentFocusedItem = focusedItems[focusedItems.length - 1];
+			currentFocusedItem.dataset.focused = 'false';
+			currentFocusedItem[whichSibling].dataset.focused = 'true';
 		}
 	}
 }
