@@ -1,0 +1,5 @@
+@import "../AccountListItem/style.css";
+
+account-multiselect {
+    overflow: auto;
+}

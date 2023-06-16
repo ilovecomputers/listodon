@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AccountMultiselect</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        account-multiselect {
+            display: block;
+            width: 380px;
+            height: 100vh;
+        }
+    </style>
+    <script type="module">
+			import {AccountMultiselect} from "./AccountMultiselect.js";
+			import {ACCOUNTS} from "../AccountListItem/mock.js";
+
+			/**
+			 * @type {AccountMultiselect}
+			 */
+			const accountMultiselect = document.querySelector('account-multiselect');
+			accountMultiselect.accounts = ACCOUNTS;
+    </script>
+</head>
+<body>
+
+<account-multiselect></account-multiselect>
+<template id="account-list-item">
+    <img/>
+    <article>
+        <bdi><strong></strong></bdi>
+        <p></p>
+    </article>
+</template>
+</body>
+</html>
