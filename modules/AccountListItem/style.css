@@ -8,7 +8,7 @@ account-list-item {
     font-size: 0.875rem;
 }
 
-account-list-item[aria-selected=true], account-list-item[data-focused=true] {
+account-list-item[data-focused=true] {
     background-color: rgb(38, 39, 128);
 }
 
