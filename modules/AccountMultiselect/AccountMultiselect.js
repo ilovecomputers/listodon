@@ -55,11 +55,17 @@ export class AccountMultiselect extends HTMLElement {
 		const focusedItems = this.querySelectorAll('account-list-item[data-focused="true"]');
 		if (focusedItems.length === 0) {
 			this.querySelector('account-list-item').dataset.focused = 'true';
-		} else {
-			const currentFocusedItem = focusedItems[focusedItems.length - 1];
-			currentFocusedItem.dataset.focused = 'false';
-			currentFocusedItem[whichSibling].dataset.focused = 'true';
+			return;
 		}
+
+		const currentFocusedItem = focusedItems[focusedItems.length - 1];
+		const nextFocusedItemElement = currentFocusedItem[whichSibling];
+		if (nextFocusedItemElement === null) {
+			return;
+		}
+
+		currentFocusedItem.dataset.focused = 'false';
+		nextFocusedItemElement.dataset.focused = 'true';
 	}
 }
 
