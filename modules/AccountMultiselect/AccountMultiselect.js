@@ -40,6 +40,10 @@ export class AccountMultiselect extends HTMLElement {
 			case 'ArrowUp':
 				this.#focusPreviousItem();
 				break;
+			case ' ':
+				event.preventDefault();
+				this.#clickCurrentItem();
+				break;
 		}
 	}
 
@@ -66,6 +70,12 @@ export class AccountMultiselect extends HTMLElement {
 
 		currentFocusedItem.dataset.focused = 'false';
 		nextFocusedItemElement.dataset.focused = 'true';
+	}
+
+	#clickCurrentItem() {
+		const focusedItems = this.querySelectorAll('account-list-item[data-focused="true"]');
+		const currentFocusedItem = focusedItems[focusedItems.length - 1];
+		currentFocusedItem.click();
 	}
 }
 
