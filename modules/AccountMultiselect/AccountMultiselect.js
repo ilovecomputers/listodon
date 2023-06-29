@@ -1,4 +1,4 @@
-import {ACCOUNT_SELECTED_EVENT} from "../AccountListItem/AccountListItem.js";
+import {ACCOUNT_TOGGLED_EVENT} from "../AccountListItem/AccountListItem.js";
 
 export class AccountMultiselect extends HTMLElement {
 	/**
@@ -15,7 +15,7 @@ export class AccountMultiselect extends HTMLElement {
 	constructor() {
 		super();
 		this.tabIndex = 0;
-		this.addEventListener(ACCOUNT_SELECTED_EVENT, this.#onAccountSelect);
+		this.addEventListener(ACCOUNT_TOGGLED_EVENT, this.#onAccountToggled);
 		this.addEventListener('keydown', this.#onKeyDown);
 	}
 
@@ -30,7 +30,7 @@ export class AccountMultiselect extends HTMLElement {
 		this.appendChild(accounts);
 	}
 
-	#onAccountSelect(event) {
+	#onAccountToggled(event) {
 		this.#toggleItem(event.target);
 	}
 
