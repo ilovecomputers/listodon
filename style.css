@@ -1,8 +1,6 @@
 @import "modules/AccountMultiselect/style.css";
+@import "global.css";
 
-html {
-    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-}
 
 button[name=fetch], button[name=clear] {
     display: none;
