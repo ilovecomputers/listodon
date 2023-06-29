@@ -32,6 +32,7 @@ export class AccountMultiselect extends HTMLElement {
 
 	#onAccountToggled(event) {
 		this.#toggleItem(event.target);
+		this.#focusItem(event.target);
 	}
 
 	/**
@@ -43,6 +44,17 @@ export class AccountMultiselect extends HTMLElement {
 		} else {
 			accountListItem.setAttribute('aria-selected', 'true');
 		}
+	}
+
+	/**
+	 * @param {AccountListItem} accountListItem
+	 */
+	#focusItem(accountListItem) {
+		const currentFocusedItem = this.querySelector('account-list-item[data-focused="true"]');
+		if (currentFocusedItem) {
+			currentFocusedItem.dataset.focused = 'false';
+		}
+		accountListItem.dataset.focused = 'true';
 	}
 
 	/**
@@ -69,21 +81,20 @@ export class AccountMultiselect extends HTMLElement {
 	}
 
 	#focusNextItem() {
-		this.#focusItem('nextElementSibling');
+		this.#focusAdjacentItem('nextElementSibling');
 	}
 
 	#focusPreviousItem() {
-		this.#focusItem('previousElementSibling');
+		this.#focusAdjacentItem('previousElementSibling');
 	}
 
-	#focusItem(whichSibling) {
-		const focusedItems = this.querySelectorAll('account-list-item[data-focused="true"]');
-		if (focusedItems.length === 0) {
+	#focusAdjacentItem(whichSibling) {
+		const currentFocusedItem = this.querySelector('account-list-item[data-focused="true"]');
+		if (!currentFocusedItem) {
 			this.querySelector('account-list-item').dataset.focused = 'true';
 			return;
 		}
 
-		const currentFocusedItem = focusedItems[focusedItems.length - 1];
 		const nextFocusedItemElement = currentFocusedItem[whichSibling];
 		if (nextFocusedItemElement === null) {
 			return;
@@ -97,8 +108,7 @@ export class AccountMultiselect extends HTMLElement {
 	}
 
 	#toggleCurrentItem() {
-		const focusedItems = this.querySelectorAll('account-list-item[data-focused="true"]');
-		const currentFocusedItem = focusedItems[focusedItems.length - 1];
+		const currentFocusedItem = this.querySelector('account-list-item[data-focused="true"]');
 		this.#toggleItem(currentFocusedItem);
 	}
 }
