@@ -4,7 +4,13 @@ export class AccountMultiselect extends HTMLElement {
 	/**
 	 * @type {Array.<Account>}
 	 */
-	#accounts;
+	#accounts = [];
+
+	/**
+	 * Toggle accounts as you move the focus
+	 * @type {boolean}
+	 */
+	#toggleWithMovement = false;
 
 	constructor() {
 		super();
@@ -25,14 +31,28 @@ export class AccountMultiselect extends HTMLElement {
 	}
 
 	#onAccountSelect(event) {
-		if (event.target.getAttribute('aria-selected') === 'true') {
-			event.target.removeAttribute('aria-selected');
+		this.#toggleItem(event.target);
+	}
+
+	/**
+	 * @param {AccountListItem} accountListItem
+	 */
+	#toggleItem(accountListItem) {
+		if (accountListItem.getAttribute('aria-selected') === 'true') {
+			accountListItem.removeAttribute('aria-selected');
 		} else {
-			event.target.setAttribute('aria-selected', 'true');
+			accountListItem.setAttribute('aria-selected', 'true');
 		}
 	}
 
+	/**
+	 * @param {KeyboardEvent} event
+	 */
 	#onKeyDown(event) {
+		if (event.shiftKey) {
+			event.preventDefault()
+			this.#toggleWithMovement = true;
+		}
 		switch (event.key) {
 			case 'ArrowDown':
 				this.#focusNextItem();
@@ -42,9 +62,10 @@ export class AccountMultiselect extends HTMLElement {
 				break;
 			case ' ':
 				event.preventDefault();
-				this.#clickCurrentItem();
+				this.#toggleCurrentItem();
 				break;
 		}
+		this.#toggleWithMovement = false;
 	}
 
 	#focusNextItem() {
@@ -70,12 +91,15 @@ export class AccountMultiselect extends HTMLElement {
 
 		currentFocusedItem.dataset.focused = 'false';
 		nextFocusedItemElement.dataset.focused = 'true';
+		if (this.#toggleWithMovement) {
+			this.#toggleItem(nextFocusedItemElement);
+		}
 	}
 
-	#clickCurrentItem() {
+	#toggleCurrentItem() {
 		const focusedItems = this.querySelectorAll('account-list-item[data-focused="true"]');
 		const currentFocusedItem = focusedItems[focusedItems.length - 1];
-		currentFocusedItem.click();
+		this.#toggleItem(currentFocusedItem);
 	}
 }
 
