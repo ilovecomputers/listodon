@@ -4,6 +4,7 @@
 const TEMPLATE = document.querySelector('#account-list-item');
 
 export const ACCOUNT_TOGGLED_EVENT = 'accountToggled';
+export const RANGE_OF_ACCOUNTS_TOGGLED_EVENT = 'rangeOfAccountsToggled';
 
 export class AccountListItem extends HTMLElement {
 	/**
@@ -16,7 +17,7 @@ export class AccountListItem extends HTMLElement {
 		if (!TEMPLATE) {
 			throw new Error('No template found for <account-list-item>');
 		}
-		this.addEventListener('click', this.#onToggle);
+		this.addEventListener('click', this.#onClick);
 	}
 
 	/**
@@ -25,7 +26,6 @@ export class AccountListItem extends HTMLElement {
 	set account(account) {
 		this.#account = account;
 		this.appendChild(this.populateTemplate(account));
-		this.addEventListener('click', this.#onToggle);
 	}
 
 	/**
@@ -45,8 +45,12 @@ export class AccountListItem extends HTMLElement {
 		return template;
 	}
 
-	#onToggle() {
-		this.dispatchEvent(new CustomEvent(ACCOUNT_TOGGLED_EVENT, {bubbles: true}));
+	#onClick(event) {
+		if (event.shiftKey) {
+			this.dispatchEvent(new CustomEvent(RANGE_OF_ACCOUNTS_TOGGLED_EVENT, {bubbles: true}));
+		} else {
+			this.dispatchEvent(new CustomEvent(ACCOUNT_TOGGLED_EVENT, {bubbles: true}));
+		}
 	}
 }
 

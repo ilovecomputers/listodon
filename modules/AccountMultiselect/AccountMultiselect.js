@@ -1,4 +1,4 @@
-import {ACCOUNT_TOGGLED_EVENT} from "../AccountListItem/AccountListItem.js";
+import {ACCOUNT_TOGGLED_EVENT, RANGE_OF_ACCOUNTS_TOGGLED_EVENT} from "../AccountListItem/AccountListItem.js";
 
 export class AccountMultiselect extends HTMLElement {
 	/**
@@ -16,15 +16,17 @@ export class AccountMultiselect extends HTMLElement {
 		super();
 		this.tabIndex = 0;
 		this.addEventListener(ACCOUNT_TOGGLED_EVENT, this.#onAccountToggled);
+		this.addEventListener(RANGE_OF_ACCOUNTS_TOGGLED_EVENT, this.#onRangeOfAccountsToggled);
 		this.addEventListener('keydown', this.#onKeyDown);
 	}
 
 	set accounts(value) {
 		this.#accounts = value;
 		const accounts = document.createDocumentFragment();
-		for (const account of this.#accounts) {
+		for (const [index, account] of this.#accounts.entries()) {
 			const option = document.createElement('account-list-item');
 			option.account = account;
+			option.dataset.index = index.toString();
 			accounts.appendChild(option);
 		}
 		this.appendChild(accounts);
@@ -33,6 +35,31 @@ export class AccountMultiselect extends HTMLElement {
 	#onAccountToggled(event) {
 		this.#toggleItem(event.target);
 		this.#focusItem(event.target);
+	}
+
+	#onRangeOfAccountsToggled(event) {
+		let currentFocusedItem = this.querySelector('account-list-item[data-focused="true"]');
+
+		// if no focused item, then consider the first item focused
+		if (!currentFocusedItem) {
+			currentFocusedItem = this.querySelector('account-list-item');
+		}
+		const currentFocusedItemIndex = Number(currentFocusedItem.dataset.index);
+		const selectedItemIndex = Number(event.target.dataset.index);
+		let item = currentFocusedItem;
+
+		// if we range select an item before the focused
+		if (currentFocusedItemIndex > selectedItemIndex) {
+			item = event.target;
+		}
+
+		for (let i = Math.min(currentFocusedItemIndex, selectedItemIndex); i <= Math.max(currentFocusedItemIndex, selectedItemIndex); i++) {
+			this.#toggleItem(item);
+			item = item.nextSibling;
+		}
+
+		currentFocusedItem.dataset.focused = 'false';
+		event.target.dataset.focused = 'true';
 	}
 
 	/**
@@ -62,7 +89,7 @@ export class AccountMultiselect extends HTMLElement {
 	 */
 	#onKeyDown(event) {
 		if (event.shiftKey) {
-			event.preventDefault()
+			event.preventDefault();
 			this.#toggleWithMovement = true;
 		}
 		switch (event.key) {
