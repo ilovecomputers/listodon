@@ -18,6 +18,7 @@ export class AccountListItem extends HTMLElement {
 			throw new Error('No template found for <account-list-item>');
 		}
 		this.addEventListener('click', this.#onClick);
+		this.addEventListener('mousedown', this.#preventTextSelection);
 	}
 
 	/**
@@ -50,6 +51,12 @@ export class AccountListItem extends HTMLElement {
 			this.dispatchEvent(new CustomEvent(RANGE_OF_ACCOUNTS_TOGGLED_EVENT, {bubbles: true}));
 		} else {
 			this.dispatchEvent(new CustomEvent(ACCOUNT_TOGGLED_EVENT, {bubbles: true}));
+		}
+	}
+
+	#preventTextSelection(event) {
+		if (event.shiftKey) {
+			event.preventDefault();
 		}
 	}
 }
