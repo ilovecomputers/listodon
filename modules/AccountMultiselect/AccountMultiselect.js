@@ -99,6 +99,12 @@ export class AccountMultiselect extends HTMLElement {
 			case 'ArrowUp':
 				this.#focusPreviousItem();
 				break;
+			case 'Home':
+				this.#focusItem(this.querySelector('account-list-item'))
+				break;
+			case 'End':
+				this.#focusItem(Array.from(this.querySelectorAll('account-list-item')).at(-1))
+				break;
 			case ' ':
 				event.preventDefault();
 				this.#toggleCurrentItem();
