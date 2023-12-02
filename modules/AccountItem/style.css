@@ -1,4 +1,4 @@
-account-list-item {
+account-item {
     display: grid;
     grid-template-columns: 1fr 8fr 1fr;
     align-items: center;
@@ -8,11 +8,11 @@ account-list-item {
     font-size: 0.875rem;
 }
 
-account-list-item[data-focused=true] {
+account-item[data-focused=true] {
     background-color: rgb(38, 39, 128);
 }
 
-account-list-item img {
+account-item img {
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 4px;
@@ -20,20 +20,20 @@ account-list-item img {
     justify-self: center;
 }
 
-account-list-item article {
+account-item article {
     grid-column: 2;
 }
 
-account-list-item p {
+account-item p {
     margin: 0;
     color: rgb(155, 174, 200);
 }
 
-account-list-item bdi {
+account-item bdi {
     color: white;
 }
 
-account-list-item[aria-selected=true]::after {
+account-item[aria-selected=true]::after {
     content: "✓";
     color: white;
     grid-column: 3;

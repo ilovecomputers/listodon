@@ -1,4 +1,4 @@
-import {ACCOUNT_TOGGLED_EVENT, RANGE_OF_ACCOUNTS_TOGGLED_EVENT} from "../AccountListItem/AccountListItem.js";
+import {ACCOUNT_TOGGLED_EVENT, RANGE_OF_ACCOUNTS_TOGGLED_EVENT} from "../accountItem/AccountItem.js";
 
 export class AccountMultiselect extends HTMLElement {
 	/**
@@ -24,7 +24,7 @@ export class AccountMultiselect extends HTMLElement {
 		this.#accounts = value;
 		const accounts = document.createDocumentFragment();
 		for (const [index, account] of this.#accounts.entries()) {
-			const option = document.createElement('account-list-item');
+			const option = document.createElement('account-item');
 			option.account = account;
 			option.dataset.index = index.toString();
 			accounts.appendChild(option);
@@ -38,11 +38,11 @@ export class AccountMultiselect extends HTMLElement {
 	}
 
 	#onRangeOfAccountsToggled(event) {
-		let currentFocusedItem = this.querySelector('account-list-item[data-focused="true"]');
+		let currentFocusedItem = this.querySelector('account-item[data-focused="true"]');
 
 		// if no focused item, then consider the first item focused
 		if (!currentFocusedItem) {
-			currentFocusedItem = this.querySelector('account-list-item');
+			currentFocusedItem = this.querySelector('account-item');
 		}
 		const currentFocusedItemIndex = Number(currentFocusedItem.dataset.index);
 		const selectedItemIndex = Number(event.target.dataset.index);
@@ -63,25 +63,25 @@ export class AccountMultiselect extends HTMLElement {
 	}
 
 	/**
-	 * @param {AccountListItem} accountListItem
+	 * @param {AccountItem} accountItem
 	 */
-	#toggleItem(accountListItem) {
-		if (accountListItem.getAttribute('aria-selected') === 'true') {
-			accountListItem.removeAttribute('aria-selected');
+	#toggleItem(accountItem) {
+		if (accountItem.getAttribute('aria-selected') === 'true') {
+			accountItem.removeAttribute('aria-selected');
 		} else {
-			accountListItem.setAttribute('aria-selected', 'true');
+			accountItem.setAttribute('aria-selected', 'true');
 		}
 	}
 
 	/**
-	 * @param {AccountListItem} accountListItem
+	 * @param {AccountItem} accountItem
 	 */
-	#focusItem(accountListItem) {
-		const currentFocusedItem = this.querySelector('account-list-item[data-focused="true"]');
+	#focusItem(accountItem) {
+		const currentFocusedItem = this.querySelector('account-item[data-focused="true"]');
 		if (currentFocusedItem) {
 			currentFocusedItem.dataset.focused = 'false';
 		}
-		accountListItem.dataset.focused = 'true';
+		accountItem.dataset.focused = 'true';
 	}
 
 	/**
@@ -100,10 +100,10 @@ export class AccountMultiselect extends HTMLElement {
 				this.#focusPreviousItem();
 				break;
 			case 'Home':
-				this.#focusItem(this.querySelector('account-list-item'))
+				this.#focusItem(this.querySelector('account-item'))
 				break;
 			case 'End':
-				this.#focusItem(Array.from(this.querySelectorAll('account-list-item')).at(-1))
+				this.#focusItem(Array.from(this.querySelectorAll('account-item')).at(-1))
 				break;
 			case ' ':
 				event.preventDefault();
@@ -122,9 +122,9 @@ export class AccountMultiselect extends HTMLElement {
 	}
 
 	#focusAdjacentItem(whichSibling) {
-		const currentFocusedItem = this.querySelector('account-list-item[data-focused="true"]');
+		const currentFocusedItem = this.querySelector('account-item[data-focused="true"]');
 		if (!currentFocusedItem) {
-			this.querySelector('account-list-item').dataset.focused = 'true';
+			this.querySelector('account-item').dataset.focused = 'true';
 			return;
 		}
 
@@ -141,7 +141,7 @@ export class AccountMultiselect extends HTMLElement {
 	}
 
 	#toggleCurrentItem() {
-		const currentFocusedItem = this.querySelector('account-list-item[data-focused="true"]');
+		const currentFocusedItem = this.querySelector('account-item[data-focused="true"]');
 		this.#toggleItem(currentFocusedItem);
 	}
 }

@@ -1,12 +1,12 @@
 /**
  * @type {HTMLTemplateElement}
  */
-const TEMPLATE = document.querySelector('#account-list-item');
+const TEMPLATE = document.querySelector('#account-item');
 
 export const ACCOUNT_TOGGLED_EVENT = 'accountToggled';
 export const RANGE_OF_ACCOUNTS_TOGGLED_EVENT = 'rangeOfAccountsToggled';
 
-export class AccountListItem extends HTMLElement {
+export class AccountItem extends HTMLElement {
 	/**
 	 * @type {Account}
 	 */
@@ -15,7 +15,7 @@ export class AccountListItem extends HTMLElement {
 	constructor() {
 		super();
 		if (!TEMPLATE) {
-			throw new Error('No template found for <account-list-item>');
+			throw new Error('No template found for <account-item>');
 		}
 		this.addEventListener('click', this.#onClick);
 		this.addEventListener('mousedown', this.#preventTextSelection);
@@ -61,4 +61,4 @@ export class AccountListItem extends HTMLElement {
 	}
 }
 
-customElements.define("account-list-item", AccountListItem);
+customElements.define("account-item", AccountItem);

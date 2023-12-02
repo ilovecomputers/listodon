@@ -1,4 +1,4 @@
-@import "../AccountListItem/style.css";
+@import "../AccountItem/style.css";
 
 account-multiselect {
     overflow: auto;
