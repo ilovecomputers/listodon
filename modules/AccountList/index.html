@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AccountList</title>
+    <script type="module">
+			import {AccountList} from "./AccountList.js";
+			import {LIST_WITH_ACCOUNTS} from "./mock.js";
+
+			/**
+			 * @type {AccountList}
+			 */
+			const accountList = document.querySelector('account-list');
+			accountList.listWithAccounts = LIST_WITH_ACCOUNTS;
+    </script>
+</head>
+<body>
+<account-list></account-list>
+<template id="account-item">
+    <img/>
+    <article>
+        <bdi><strong></strong></bdi>
+        <p></p>
+    </article>
+</template>
+</body>
+</html>
