@@ -14,10 +14,13 @@ export class AccountMultiselect extends HTMLElement {
 
 	constructor() {
 		super();
-		this.tabIndex = 0;
 		this.addEventListener(ACCOUNT_TOGGLED_EVENT, this.#onAccountToggled);
 		this.addEventListener(RANGE_OF_ACCOUNTS_TOGGLED_EVENT, this.#onRangeOfAccountsToggled);
 		this.addEventListener('keydown', this.#onKeyDown);
+	}
+
+	connectedCallback() {
+		this.tabIndex = 0;
 	}
 
 	set accounts(value) {
