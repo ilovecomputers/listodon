@@ -91,7 +91,7 @@ export class AccountMultiselect extends HTMLElement {
 	 * @param {KeyboardEvent} event
 	 */
 	#onKeyDown(event) {
-		if (event.shiftKey) {
+		if (event.shiftKey && event.key !== 'Tab') {
 			event.preventDefault();
 			this.#toggleWithMovement = true;
 		}
