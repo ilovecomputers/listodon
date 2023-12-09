@@ -32,7 +32,7 @@ export class AccountMultiselect extends HTMLElement {
 			option.dataset.index = index.toString();
 			accounts.appendChild(option);
 		}
-		this.appendChild(accounts);
+		this.replaceChildren(accounts);
 	}
 
 	#onAccountToggled(event) {

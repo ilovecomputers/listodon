@@ -17,6 +17,7 @@ export class AccountList extends HTMLElement {
 		 */
 		const listSelect = document.createElement('select', {is: 'list-select'});
 		listSelect.style.display = 'none';
+		listSelect.addEventListener('change', this.#onListChange.bind(this));
 		fragment.appendChild(listSelect);
 
 		/**
@@ -38,6 +39,20 @@ export class AccountList extends HTMLElement {
 		accountMultiselect.style.display = null;
 		accountMultiselect.accounts = listSelect.accountsValue;
 	}
+
+
+	#onListChange(event) {
+		/**
+		 * @type {ListSelect}
+		 */
+		const listSelect = event.target;
+		/**
+		 * @type {AccountMultiselect}
+		 */
+		const accountMultiselect = this.querySelector('account-multiselect');
+		accountMultiselect.accounts = listSelect.accountsValue;
+	}
+
 }
 
 customElements.define('account-list', AccountList);
