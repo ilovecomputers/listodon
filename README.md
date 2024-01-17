@@ -1,2 +1,2 @@
-# listodon
+# Listodon
 Manage your Mastodon lists!
