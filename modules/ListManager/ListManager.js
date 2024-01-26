@@ -16,7 +16,6 @@ export class ListManager extends HTMLElement {
 
 	constructor() {
 		super();
-		this.render();
 	}
 
 	/**

@@ -10,7 +10,6 @@ export class AccountList extends HTMLElement {
 
 	constructor() {
 		super();
-		delete this.listWithAccounts;
 		const fragment = document.createDocumentFragment();
 
 		/**
