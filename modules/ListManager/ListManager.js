@@ -32,8 +32,10 @@ export class ListManager extends HTMLElement {
 	render() {
 		render(this, html`
         <account-list .listWithAccounts=${this.#lhsListWithAccounts}></account-list>
-        <button>⬅️</button>
-        <button>➡️</button>
+        <div>
+            <button>⬅️</button>
+            <button>➡️</button>
+        </div>
         <account-list .listWithAccounts=${this.#rhsListWithAccounts}></account-list>
 		`);
 	}

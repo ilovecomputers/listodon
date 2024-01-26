@@ -1,1 +1,7 @@
 @import "../AccountMultiselect/style.css";
+
+account-list {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(54, 60, 74);
+}

@@ -1,0 +1,12 @@
+@import "../AccountList/style.css";
+
+list-manager {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-rows: 100%;
+    grid-template-columns: auto min-content auto;
+}
+
+list-manager div {
+    align-self: center;
+}
