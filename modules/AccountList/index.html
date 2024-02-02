@@ -6,9 +6,10 @@
     <link rel="stylesheet" href="../../global.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        account-multiselect {
-            display: block;
+        div {
             width: 380px;
+        }
+        account-multiselect {
             height: 50vh;
         }
     </style>
@@ -24,7 +25,9 @@
     </script>
 </head>
 <body>
-<account-list></account-list>
+<div>
+    <account-list></account-list>
+</div>
 <template id="account-item">
     <img/>
     <article>
