@@ -1,5 +1,6 @@
 import '../ListSelect/ListSelect.js';
 import '../AccountMultiselect/AccountMultiselect.js';
+import {render, html} from 'https://esm.run/uhtml/index.js';
 
 export class AccountList extends HTMLElement {
 
@@ -10,33 +11,34 @@ export class AccountList extends HTMLElement {
 
 	constructor() {
 		super();
-		const fragment = document.createDocumentFragment();
-
-		/**
-		 * @type {ListSelect}
-		 */
-		const listSelect = document.createElement('select', {is: 'list-select'});
-		listSelect.style.display = 'none';
-		listSelect.addEventListener('change', this.#onListChange.bind(this));
-		fragment.appendChild(listSelect);
-
-		/**
-		 * @type {AccountMultiselect}
-		 */
-		const accountMultiselect = document.createElement('account-multiselect');
-		accountMultiselect.style.display = 'none';
-		fragment.appendChild(accountMultiselect);
-		this.appendChild(fragment);
 	}
 
+	connectedCallback() {
+		this.render();
+	}
 
 	set listWithAccounts(value) {
 		this.#listWithAccounts = value;
+		this.render();
+	}
+
+	render() {
+		render(this, html`
+				${this.#listWithAccounts ? html`
+						 <select
+											 is="list-select"
+											 @change=${this.#onListChange.bind(this)}
+											 .lists=${this.#listWithAccounts}
+						 />
+						 <account-multiselect />
+				` : null}
+		`);
+		if (!this.#listWithAccounts) {
+			return;
+		}
+
 		const listSelect = this.querySelector('select');
-		listSelect.lists = this.#listWithAccounts;
-		listSelect.style.display = null;
 		const accountMultiselect = this.querySelector('account-multiselect');
-		accountMultiselect.style.display = null;
 		accountMultiselect.accounts = listSelect.accountsValue;
 	}
 
