@@ -1,4 +1,5 @@
 import {ACCOUNT_TOGGLED_EVENT, RANGE_OF_ACCOUNTS_TOGGLED_EVENT} from "../accountItem/AccountItem.js";
+import {render, html} from 'https://esm.run/uhtml/index.js';
 
 export class AccountMultiselect extends HTMLElement {
 	/**
@@ -25,14 +26,18 @@ export class AccountMultiselect extends HTMLElement {
 
 	set accounts(value) {
 		this.#accounts = value;
-		const accounts = document.createDocumentFragment();
-		for (const [index, account] of this.#accounts.entries()) {
-			const option = document.createElement('account-item');
-			option.account = account;
-			option.dataset.index = index.toString();
-			accounts.appendChild(option);
-		}
-		this.replaceChildren(accounts);
+		this.render();
+	}
+
+	render() {
+		render(this, html`
+        ${this.#accounts.map((account, index) => html`
+          <account-item
+              .account=${account}
+              data-index=${index}
+          />
+        `)}
+		`);
 	}
 
 	#onAccountToggled(event) {
@@ -103,10 +108,10 @@ export class AccountMultiselect extends HTMLElement {
 				this.#focusPreviousItem();
 				break;
 			case 'Home':
-				this.#focusItem(this.querySelector('account-item'))
+				this.#focusItem(this.querySelector('account-item'));
 				break;
 			case 'End':
-				this.#focusItem(Array.from(this.querySelectorAll('account-item')).at(-1))
+				this.#focusItem(Array.from(this.querySelectorAll('account-item')).at(-1));
 				break;
 			case ' ':
 				event.preventDefault();

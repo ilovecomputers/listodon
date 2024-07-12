@@ -1,7 +1,8 @@
+import {render, html} from 'https://esm.run/uhtml/index.js';
+
 /**
  * @type {HTMLTemplateElement}
  */
-const TEMPLATE = document.querySelector('#account-item');
 
 export const ACCOUNT_TOGGLED_EVENT = 'accountToggled';
 export const RANGE_OF_ACCOUNTS_TOGGLED_EVENT = 'rangeOfAccountsToggled';
@@ -14,9 +15,6 @@ export class AccountItem extends HTMLElement {
 
 	constructor() {
 		super();
-		if (!TEMPLATE) {
-			throw new Error('No template found for <account-item>');
-		}
 		this.addEventListener('click', this.#onClick);
 		this.addEventListener('mousedown', this.#preventTextSelection);
 	}
@@ -26,24 +24,20 @@ export class AccountItem extends HTMLElement {
 	 */
 	set account(account) {
 		this.#account = account;
-		this.appendChild(this.populateTemplate(account));
+		this.render(account);
 	}
 
 	/**
-	 *
 	 * @param {Account} account
-	 * @return {Node}
 	 */
-	populateTemplate(account) {
-		const template = TEMPLATE.content.cloneNode(true);
-		const avatar = template.querySelector('img');
-		avatar.src = account.avatar;
-		avatar.alt = `Avatar of the account @${account.acct}`;
-		const displayName = template.querySelector('strong');
-		displayName.textContent = account.display_name;
-		const address = template.querySelector('p');
-		address.textContent = account.acct;
-		return template;
+	render(account) {
+		render(this, html`
+      <img src=${account.avatar} alt=${`Avatar of the account @${account.acct}`}/>
+      <article>
+        <bdi><strong>${account.display_name}</strong></bdi>
+        <p>${account.acct}</p>
+      </article>
+		`);
 	}
 
 	#onClick(event) {
