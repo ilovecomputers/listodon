@@ -27,21 +27,22 @@ export class AccountMultiselect extends HTMLElement {
 	set accounts(value) {
 		this.#accounts = value;
 		this.render();
+		this.#clearSelectedItems();
 	}
 
 	render() {
 		render(this, html`
-        ${this.#accounts.map((account, index) => html`
-          <account-item
-              .account=${account}
-              data-index=${index}
-          />
-        `)}
+      ${this.#accounts.map((account, index) => html`
+        <account-item
+            .account=${account}
+            data-index=${index}
+        />
+      `)}
 		`);
 	}
 
 	#onAccountToggled(event) {
-		this.#toggleItem(event.target);
+		this.#toggleItemSelection(event.target);
 		this.#focusItem(event.target);
 	}
 
@@ -62,7 +63,7 @@ export class AccountMultiselect extends HTMLElement {
 		}
 
 		for (let i = Math.min(currentFocusedItemIndex, selectedItemIndex); i <= Math.max(currentFocusedItemIndex, selectedItemIndex); i++) {
-			this.#toggleItem(item);
+			this.#toggleItemSelection(item);
 			item = item.nextSibling;
 		}
 
@@ -73,12 +74,17 @@ export class AccountMultiselect extends HTMLElement {
 	/**
 	 * @param {AccountItem} accountItem
 	 */
-	#toggleItem(accountItem) {
+	#toggleItemSelection(accountItem) {
 		if (accountItem.getAttribute('aria-selected') === 'true') {
 			accountItem.removeAttribute('aria-selected');
 		} else {
 			accountItem.setAttribute('aria-selected', 'true');
 		}
+	}
+
+	#clearSelectedItems() {
+		this.querySelectorAll('account-item[aria-selected="true"]')
+				.forEach(selectedItem => this.#toggleItemSelection(selectedItem));
 	}
 
 	/**
@@ -144,13 +150,13 @@ export class AccountMultiselect extends HTMLElement {
 		currentFocusedItem.dataset.focused = 'false';
 		nextFocusedItemElement.dataset.focused = 'true';
 		if (this.#toggleWithMovement) {
-			this.#toggleItem(nextFocusedItemElement);
+			this.#toggleItemSelection(nextFocusedItemElement);
 		}
 	}
 
 	#toggleCurrentItem() {
 		const currentFocusedItem = this.querySelector('account-item[data-focused="true"]');
-		this.#toggleItem(currentFocusedItem);
+		this.#toggleItemSelection(currentFocusedItem);
 	}
 }
 
