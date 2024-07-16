@@ -1,9 +1,5 @@
 import {render, html} from 'https://esm.run/uhtml/index.js';
 
-/**
- * @type {HTMLTemplateElement}
- */
-
 export const ACCOUNT_TOGGLED_EVENT = 'accountToggled';
 export const RANGE_OF_ACCOUNTS_TOGGLED_EVENT = 'rangeOfAccountsToggled';
 
