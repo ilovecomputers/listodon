@@ -30,6 +30,13 @@ export class AccountMultiselect extends HTMLElement {
 		this.#clearSelectedItems();
 	}
 
+	/**
+	 * @return {NodeListOf<AccountItem>}
+	 */
+	getSelectedAccountItems() {
+		return this.querySelectorAll('account-item[aria-selected="true"]');
+	}
+
 	render() {
 		render(this, html`
       ${this.#accounts.map((account, index) => html`
@@ -83,7 +90,7 @@ export class AccountMultiselect extends HTMLElement {
 	}
 
 	#clearSelectedItems() {
-		this.querySelectorAll('account-item[aria-selected="true"]')
+		this.getSelectedAccountItems()
 				.forEach(selectedItem => this.#toggleItemSelection(selectedItem));
 	}
 
