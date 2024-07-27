@@ -1,4 +1,4 @@
-import {ACCOUNT_TOGGLED_EVENT, RANGE_OF_ACCOUNTS_TOGGLED_EVENT} from "../accountItem/AccountItem.js";
+import {ACCOUNT_TOGGLED_EVENT, RANGE_OF_ACCOUNTS_TOGGLED_EVENT} from '../AccountItem/AccountItem.js';
 import {render, html} from 'https://esm.run/uhtml/index.js';
 
 export class AccountMultiselect extends HTMLElement {
